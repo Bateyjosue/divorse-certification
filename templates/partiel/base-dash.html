@@ -26,50 +26,59 @@
                         </div>
                         <nav>
                             <div class="ui list">
-                                <div class="item" style="">
-                                  <i class="home icon" style="font-size:20px"></i>
-                                  <div class="content" style="padding-top: 5px;">
-                                    Home
-                                  </div>
-                                </div>
-                                <div class="item">
-                                  <i class="users icon" style="font-size:20px"></i> 
-                                  <div class="content" style="padding-top: 5px;">
-                                      Couple
-                                    </div>
-                                    
-                                  </div>
-                                  <div class="item">
-                                    <i class="heart slash icon" style="font-size:20px"></i>
-                                  <div class="content" style="padding-top: 5px;">
-                                      Wed
-                                    </div>
-                                    
-                                  </div>
-                                  <div class="item">
+                                <a id="nav-link" class="" href="{% url 'certification:add-couple'%}">
+                                    <div class="item" style="">
                                     <i class="home icon" style="font-size:20px"></i>
-                                  <div class="content" style="padding-top: 5px;">
-                                      Divorse
+                                    <div class="content" style="">
+                                        Home
                                     </div>
-                                    
-                                  </div>
+                                    </div>
+                                </a>
+                                <a id="nav-link" class="" href="{% url 'certification:add-couple'%}">
                                   <div class="item">
-                                    <i class="cog icon" style="font-size:20px"></i>
-                                  <div class="content" style="padding-top: 5px;">
-                                      Profile
-                                    </div>
+                                      <i class="users icon" style="font-size:20px"></i> 
+                                      <div class="content " style="">
+                                        Add Couple Information
+                                      </div>
                                   </div>
-                                  <div class="item">
-                                    <i class="power off icon" style="font-size:20px; margin-right:10px;"></i>
-                                    <div class="content" style="padding-top: 5px;margin-left:10px;">
-                                      Logout
+                                </a>
+                                <a id="nav-link" class="" href="{% url 'certification:add-couple'%}">
+                                    <div class="item">
+                                        <i class="heart slash icon" style="font-size:20px"></i>
+                                        <div class="content" style="">
+                                            Wedding Certification
+                                        </div>
                                     </div>
-                                  </div>
+                                </a>
+                                <a id="nav-link" class="" href="{% url 'certification:add-couple'%}">
+                                    <div class="item">
+                                        <i class="home icon" style="font-size:20px"></i>
+                                        <div class="content" style="">
+                                            Divorse Certification
+                                        </div>
+                                    </div>
+                                </a>
+                                <a id="nav-link" class="" href="{% url 'certification:add-couple'%}">
+                                    <div class="item">
+                                        <i class="cog icon" style="font-size:20px"></i>
+                                        <div class="content" style="">
+                                            Profile
+                                        </div>
+                                    </div>
+                                </a>
+                                <a id="nav-link" class="" href="{% url 'certification:add-couple'%}">
+                                    <div class="item">
+                                        <i class="power off icon" style="font-size:20px; "></i>
+                                        <div class="content" style="">
+                                            Logout
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
                         </nav>
                         
                     </div>
-                    <div id="main" class="twelve wide column ">
+                    <div id="main" class="ui container twelve wide column ">
                       {% block content %}
                       {% endblock %}
                     </div>

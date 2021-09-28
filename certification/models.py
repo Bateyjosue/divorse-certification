@@ -13,8 +13,10 @@ class Couple(models.Model):
     mail = models.EmailField(max_length=50)
     photo = models.ImageField(upload_to='couple_images/')
     address = models.CharField(max_length=200)
+
     choice_status = (('Pending', 'Pending'), ('Married', 'Married'), ('Divorse', 'Divorse'))
     status = models.CharField(max_length=50,choices=choice_status, default=('Pending'))
+    
     created_at  = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)    
 

@@ -41,15 +41,30 @@ nav > div > div i, .content{
     font-size: 16px;
     /* background: red; */
     margin-left: 40px;
-    padding: 20px 40px;
-    line-height: 30px;
+    padding: 20px 20px;
+    line-height: 0px;
 }
+#nav-link{
+   /* background: #000; */
+   color: #fff;
+   padding: auto;
+}
+#nav-link > div{
+    display: flex;
+} 
+#nav-link div:nth-child(1){
+    padding-left: 20px;
+    
+}
+#nav-link div:nth-child(2){
+    margin: 0px;
+   
+ }
 nav > div> div .content{
-    padding-top: 15px;
+    /* padding-top: 0px; */
 }
 nav > div .item:hover{
     background: #000;
-    padding-top: 10px;
 }
 .stat > div > div{
     padding-top: 30px;
