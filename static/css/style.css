@@ -9,6 +9,9 @@ body{
 .avantar{
     padding-top:10px;
     margin-bottom: 30px;
+    position: fixed;
+    
+
 }
 #image-profile{
     
@@ -22,14 +25,20 @@ body{
 }
 #side{
     background: red;
+    box-sizing: border-box;
 }
 nav{
     /* background: #000; */
+    position: fixed;
+    top: 260px;
+    z-index: 1;
+    width: 330px;
+    scroll-behavior: smooth;
     
 }
 nav > div > div i, .content{
     /* padding: 32px 40px; */
-    font-size: 18px;
+    font-size: 16px;
     /* background: red; */
     margin-left: 40px;
     padding: 20px 40px;
@@ -46,4 +55,9 @@ nav > div .item:hover{
     padding-top: 30px;
     padding-right: 50px;
     padding-left: 50px;
+}
+.stat{
+    margin-bottom: 30px;
+}
+.table-wed{
 }
