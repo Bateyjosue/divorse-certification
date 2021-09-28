@@ -10,4 +10,4 @@ class DashboardView(View):
         if request.user.is_authenticated:
             return render(request,'dashboard.html')
         else:
-            redirect('account_login')
+            return redirect('account_login')

@@ -26,9 +26,9 @@
                         </div>
                         <nav>
                             <div class="ui list">
-                                <div class="item">
+                                <div class="item" style="">
                                   <i class="home icon" style="font-size:26px"></i>
-                                  <div class="content">
+                                  <div class="content" style="font-size:26px">
                                     Home
                                   </div>
                                 </div>
@@ -69,11 +69,12 @@
                         </nav>
                         
                     </div>
-                    <div id="main" class="twelve wide column black">main</div>
+                    <div id="main" class="twelve wide column ">
+                      {% block content %}
+                      {% endblock %}
+                    </div>
                 </div>
             </div>
-        {% block content %}
-        {% endblock %}
-        </main>
+                  </main>
     </body>
 </html>

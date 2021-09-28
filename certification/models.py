@@ -20,22 +20,11 @@ class Couple(models.Model):
     def __str__(self):
         return self.Nat_ID 
 
-class Term (models.Model):
-    nature = models.CharField(max_length=50)
-    description = models.CharField(max_length=200)
-
-    created_at  = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.nature
-
-
 class Wed(models.Model):
     wed_matricule = models.CharField(max_length=50,primary_key=True, null=False, blank=True)
     bride = models.OneToOneField(Couple, on_delete=models.CASCADE, related_name='brides', unique=True)
     groom = models.OneToOneField(Couple, on_delete=models.CASCADE,related_name='grooms', unique=True)
-    term = models.ForeignKey(Term,on_delete=models.CASCADE)
+    term =  models.CharField(max_length=200)
     place = models.CharField(max_length=200,help_text="DRC/KINSHASA/GOMBE")
     officer = models.CharField(max_length=200,help_text="Officer full-name")
     is_divorsed = models.BooleanField(default=False)
@@ -55,22 +44,11 @@ def pre_save_wed_matricule(sender, instance, *args, **kwargs):
 
 pre_save.connect(pre_save_wed_matricule, sender=Wed)
 
-class Sentence(models.Model):
-    sentence = models.CharField(max_length=50)
-    description = models.CharField(max_length=200)
-    judge = models.CharField(max_length=200, help_text="Full-name of the judge who who pronounce the sentence")
-    place = models.CharField(max_length=50,help_text="Country/State/Disctrict or Town")
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.sentence
 
 class Divorse(models.Model):
     divorse_matricule =models.CharField(max_length=50,primary_key=True)
     wed = models.ForeignKey(Wed, on_delete=models.CASCADE)
-    sentence = models.ForeignKey(Sentence, on_delete=models.CASCADE)
+    sentence = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

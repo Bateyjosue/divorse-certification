@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 
     'certification',
+    # Crispy
+    'crispy_forms',
 ]
 SITE_ID = 1
 
@@ -164,3 +166,9 @@ MEDIA_URL   = '/media/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CRISPY_TEMPLATE_PACK = 'semantic-ui'
+CRISPY_ALLOWED_TEMPLATE_PACKS = ('semantic-ui')
+ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT =10
+ACCOUNT_LOGOUT_REDIRECT_URL='account_login'
+LOGIN_REDIRECT_URL='certification:dashboard'
