@@ -50,6 +50,22 @@ class AddWedView(View):
             'wed' : WedForm(),
         }
         return render(request,'add-wed.html',context)
+    def post(self, request):
+        wed = WedForm(request.POST)
+        if wed.is_valid():
+            gr = request.POST.get('groom')
+            bd = request.POST.get('bride')
+            if not Wed.objects.filter(groom=gr).exists() or not Wed.objects.filter(bride=bd).exists:
+                if Wed.objects.filter(is_divorsed= True).exists:
+                    wed.save(commit=True)
+                    messages.success(request, ' Saved ')
+                    return HttpResponseRedirect(reverse('certification:dashoard'))
+                else:
+                    messages.success(request, 'Unfinilized Divorse Process')
+                    return HttpResponseRedirect(reverse('certification:add-wed'))
+            else:
+                messages.success(request, 'Unfinilized Divorse Process')
+                return HttpResponseRedirect(reverse('certification:add-wed'))
 
 class AddDivorseView(View):
     def get(self, request):
@@ -62,8 +78,11 @@ class AddDivorseView(View):
         divorse = DivorseForm(request.POST)
         if divorse.is_valid():
             divorse.save(commit=True)
-            messages.success(request, 'Saved')
-            return HttpResponseRedirect(reverse('certification:dashboard'))
+            weds = request.POST.get('wed')
+            if Wed.objects.filter(wed_matricule = weds).exists():
+                Wed.objects.filter(wed_matricule = weds).update(is_divorsed= True)
+                messages.success(request, 'Saved')
+                return HttpResponseRedirect(reverse('certification:dashboard'))
         else:
             weds = request.POST.get('wed')
             wedd = Divorse.objects.filter(wed=weds).exists()

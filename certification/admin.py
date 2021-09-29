@@ -6,6 +6,7 @@ from .models import Wed, Couple,Divorse
 @admin.register(Wed)
 class WedAdmin(admin.ModelAdmin):
     fields =[]
+    list_display = ('pk', 'bride', 'groom','term', 'place', 'officer', 'is_divorsed')
 
 
 @admin.register(Couple)

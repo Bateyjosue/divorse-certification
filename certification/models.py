@@ -42,7 +42,7 @@ class Wed(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.wed_matricule
+        return self.wed_matricule 
     
     def get_Wed_matricule(self):
         pass
