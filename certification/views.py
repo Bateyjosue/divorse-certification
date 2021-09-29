@@ -35,13 +35,17 @@ class AddCoupleView(View):
     def post(self, request):
         groom = CoupleForm(request.POST)
         bride = CoupleForm(request.POST)
-        if groom.is_valid() and bride.is_valid():
+        if groom.is_valid():
             groom.save(commit=True)
-            bride.save(commit=True)
+            if bride.is_valid():
+                bride.save(commit=True)
+            else:
+                messages.success(request, 'Check Information provided in Bride')
+                return HttpResponseRedirect(reverse('certification:add-couple'))
             messages.success(request, 'Data saved successfully')
             return HttpResponseRedirect(reverse('certification:dash'))
         else:
-            messages.success(request, 'Check Information provided if are correct')
+            messages.success(request, 'Check Information provided in Groom')
             return HttpResponseRedirect(reverse('certification:add-couple'))
 
 class AddWedView(View):
@@ -58,8 +62,10 @@ class AddWedView(View):
             if not Wed.objects.filter(groom=gr).exists() or not Wed.objects.filter(bride=bd).exists:
                 if Wed.objects.filter(is_divorsed= True).exists:
                     wed.save(commit=True)
+                    Couple.objects.filter(Nat_ID = gr).update(status='Married')
+                    Couple.objects.filter(Nat_ID = bd).update(status='Married')
                     messages.success(request, ' Saved ')
-                    return HttpResponseRedirect(reverse('certification:dashoard'))
+                    return HttpResponseRedirect(reverse('certification:dashboard'))
                 else:
                     messages.success(request, 'Unfinilized Divorse Process')
                     return HttpResponseRedirect(reverse('certification:add-wed'))

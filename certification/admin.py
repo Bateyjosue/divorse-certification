@@ -12,6 +12,7 @@ class WedAdmin(admin.ModelAdmin):
 @admin.register(Couple)
 class CoupleAdmin(admin.ModelAdmin):
     fields =[]
+    list_display = ('Nat_ID', 'full_name', 'dob','phone','mail','address','status','created_at','updated_at')
 
 
 @admin.register(Divorse)
