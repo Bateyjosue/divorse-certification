@@ -3,7 +3,14 @@
 {% block content%}
     <div>
         <h3 class="ui" style="background: rgb(13, 156, 234);padding:10px 20px;color: rgb(239, 236, 236);"> Divorse Information</h3>
-       <form class="ui form" action="" method="post" style="margin-bottom:340px;">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form class="ui form" action="" method="post" style="margin-bottom:340px;">
            {% csrf_token %}
            <div class="ui   column grid" >
                 <div class="ui  column ">

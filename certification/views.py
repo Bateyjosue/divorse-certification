@@ -1,7 +1,10 @@
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views import View
 from .models import *
 from .forms import *
+from django.contrib import messages
+from django.urls import reverse
 # Create your views here.
 class IndexView(View):
     def get(self, request):
@@ -30,7 +33,16 @@ class AddCoupleView(View):
         }
         return render(request,'add-couple.html', context)
     def post(self, request):
-        pass
+        groom = CoupleForm(request.POST)
+        bride = CoupleForm(request.POST)
+        if groom.is_valid() and bride.is_valid():
+            groom.save(commit=True)
+            bride.save(commit=True)
+            messages.success(request, 'Data saved successfully')
+            return HttpResponseRedirect(reverse('certification:dash'))
+        else:
+            messages.success(request, 'Check Information provided if are correct')
+            return HttpResponseRedirect(reverse('certification:add-couple'))
 
 class AddWedView(View):
     def get(self, request):
@@ -46,3 +58,19 @@ class AddDivorseView(View):
             
         }
         return render(request,'add-divorse.html',context)
+    def post(self, request):
+        divorse = DivorseForm(request.POST)
+        if divorse.is_valid():
+            divorse.save(commit=True)
+            messages.success(request, 'Saved')
+            return HttpResponseRedirect(reverse('certification:dashboard'))
+        else:
+            weds = request.POST.get('wed')
+            wedd = Divorse.objects.filter(wed=weds).exists()
+            print(wedd)
+            if Divorse.objects.filter(wed=weds).exists():
+                messages.error(request, 'Wedding Matricule exists')
+                return HttpResponseRedirect(reverse('certification:add-divorse'))
+            messages.error(request, 'Not saved')
+            return HttpResponseRedirect(reverse('certification:add-divorse'))
+

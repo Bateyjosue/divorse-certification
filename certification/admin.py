@@ -15,4 +15,5 @@ class CoupleAdmin(admin.ModelAdmin):
 
 @admin.register(Divorse)
 class DivorseAdmin(admin.ModelAdmin):
-    fields =[]
+    fields =['divorse_matricule', 'wed','sentence']
+    list_display = ('pk','divorse_matricule', 'wed','sentence', 'created_at', 'updated_at')

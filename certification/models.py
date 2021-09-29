@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.expressions import Value
+from django.db.models.fields import DateTimeField
 
 from django.db.models.signals import pre_save
 from core.utils import *
@@ -11,11 +12,11 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Couple(models.Model):
-    Nat_ID = models.CharField(max_length=20,blank=False,null=False)
+    Nat_ID = models.CharField(max_length=20,blank=False,null=False, unique=True)
     full_name = models.CharField(max_length=50)
-    dob = models.DateTimeField()
-    phone = models.CharField(max_length=50)
-    mail = models.EmailField(max_length=50)
+    dob = models.DateTimeField(default=True)
+    phone = models.CharField(max_length=50, unique=True)
+    mail = models.EmailField(max_length=50, unique=True)
     photo = models.ImageField(upload_to='couple_images/')
     address = models.CharField(max_length=200)
 
@@ -30,8 +31,8 @@ class Couple(models.Model):
 
 class Wed(models.Model):
     wed_matricule = models.CharField(max_length=50,primary_key=True, null=False, blank=True)
-    bride = models.OneToOneField(Couple, on_delete=models.CASCADE, related_name='brides', unique=True)
-    groom = models.OneToOneField(Couple, on_delete=models.CASCADE,related_name='grooms', unique=True)
+    bride = models.ForeignKey(Couple, on_delete=models.CASCADE, related_name='brides')
+    groom = models.ForeignKey(Couple, on_delete=models.CASCADE,related_name='grooms')
     term =  models.CharField(max_length=200)
     place = models.CharField(max_length=200,help_text="DRC/KINSHASA/GOMBE")
     officer = models.CharField(max_length=200,help_text="Officer full-name")
@@ -55,7 +56,7 @@ pre_save.connect(pre_save_wed_matricule, sender=Wed)
 
 class Divorse(models.Model):
     divorse_matricule =models.CharField(max_length=50,primary_key=True)
-    wed = models.ForeignKey(Wed, on_delete=models.CASCADE)
+    wed = models.OneToOneField(Wed, on_delete=models.CASCADE, unique=True)
     sentence = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
