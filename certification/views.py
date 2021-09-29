@@ -25,8 +25,8 @@ class DashboardView(View):
 class AddCoupleView(View):
     def get(self, request):
         context = {
-            'couple': CoupleForm(),
-            'divorse' : DivorseForm(),
+            'groom': CoupleForm(),
+            'bride': CoupleForm(),
         }
         return render(request,'add-couple.html', context)
     def post(self, request):
@@ -37,3 +37,12 @@ class AddWedView(View):
         context ={
             'wed' : WedForm(),
         }
+        return render(request,'add-wed.html',context)
+
+class AddDivorseView(View):
+    def get(self, request):
+        context ={
+            'divorse' : DivorseForm(),
+            
+        }
+        return render(request,'add-divorse.html',context)

@@ -3,8 +3,13 @@ from django.db.models.expressions import Value
 
 from django.db.models.signals import pre_save
 from core.utils import *
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+# class User(AbstractUser:
+
+
+
 class Couple(models.Model):
     Nat_ID = models.CharField(max_length=20,blank=False,null=False)
     full_name = models.CharField(max_length=50)
@@ -16,7 +21,7 @@ class Couple(models.Model):
 
     choice_status = (('Pending', 'Pending'), ('Married', 'Married'), ('Divorse', 'Divorse'))
     status = models.CharField(max_length=50,choices=choice_status, default=('Pending'))
-    
+
     created_at  = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)    
 

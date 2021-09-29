@@ -216,6 +216,7 @@
                 <th>Wedding Matricule</th>
                 <th>Sentence</th>
                 <th>Created Date</th>
+                <th>Certificate</th>
               </tr>
             </thead>
             <tbody>
@@ -226,10 +227,10 @@
                             <input type="checkbox"> <label></label>
                         </div>
                         </td> -->
-                        <td>John Lilki</td>
-                        <td>September 14, 2013</td>
-                        <td>jhlilk22@yahoo.com</td>
-                        <td>No</td>
+                        <td>{{divorses.divorse_matricule}}</td>
+                        <td>{{divorses.wed}}</td>
+                        <td>{{divorses.sentence}}</td>
+                        <td><i class="icon red print" style="font-size: 18px;"></i>Print</td>  
                     </tr>
                     {% empty %}
                     <tr>

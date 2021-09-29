@@ -10,7 +10,7 @@ class CoupleForm(forms.ModelForm):
 class WedForm(forms.ModelForm):
     class Meta:
         model = Wed
-        exclude = ['created_at', 'updated_at']
+        exclude = ['created_at', 'updated_at', 'is_divorsed']
 
 class DivorseForm(forms.ModelForm):
     class Meta:
