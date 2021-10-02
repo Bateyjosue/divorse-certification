@@ -1,9 +1,10 @@
 from django.urls import path, include
-from .views import IndexView, DashboardView, AddCoupleView, AddWedView, AddDivorseView
+from .views import IndexView, DashboardView, AddCoupleView, AddWedView, AddDivorseView, SearchDocumentView
 
 app_name = 'certification'
 urlpatterns=[
     path('', IndexView.as_view(), name='home'),
+    path('search', SearchDocumentView.as_view(), name='search'),
     path('dash', DashboardView.as_view(), name='dashboard'),
     path('add-couple', AddCoupleView.as_view(), name='add-couple'),
     path('add-wed', AddWedView.as_view(), name='add-wed'),

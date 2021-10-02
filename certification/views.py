@@ -6,9 +6,14 @@ from .forms import CoupleForm, WedForm, DivorseForm
 from django.contrib import messages
 from django.urls import reverse
 # Create your views here.
+
 class IndexView(View):
     def get(self, request):
         return render(request,'index.html')
+
+class SearchDocumentView(View):
+    def get(self, request):
+        return render(request,'search-doc.html')
 
 class DashboardView(View):
     def get(self, request):
