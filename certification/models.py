@@ -13,8 +13,9 @@ from django.contrib.auth.models import AbstractUser
 
 class Couple(models.Model):
     Nat_ID = models.CharField(max_length=20,blank=False,null=False, unique=True)
+    
     full_name = models.CharField(max_length=50)
-    dob = models.DateTimeField(default=True)
+    dob = models.DateTimeField()
     phone = models.CharField(max_length=50, unique=True)
     mail = models.EmailField(max_length=50, unique=True)
     photo = models.ImageField(upload_to='couple_images/')

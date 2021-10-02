@@ -2,7 +2,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views import View
 from .models import *
-from .forms import *
+from .forms import CoupleForm, WedForm, DivorseForm
 from django.contrib import messages
 from django.urls import reverse
 # Create your views here.
@@ -32,17 +32,19 @@ class AddCoupleView(View):
             'bride': CoupleForm(),
         }
         return render(request,'add-couple.html', context)
+
     def post(self, request):
         groom = CoupleForm(request.POST)
-        bride = CoupleForm(request.POST)
-        if groom.is_valid():
-            groom.save(commit=True)
-            if bride.is_valid():
-                bride.save(commit=True)
-            else:
-                messages.success(request, 'Check Information provided in Bride')
-                return HttpResponseRedirect(reverse('certification:add-couple'))
-            messages.success(request, 'Data saved successfully')
+        # bride = CoupleForm(request.POST)
+        if  self.groom.is_valid():
+            self.groom.save(commit=True)
+            messages.success(request, 'Data saved successfully [Groom]')
+            # if bride.is_valid():
+            #     bride.save(commit=True)
+            #     messages.success(request, 'Data saved successfully [bride]')
+            # else:
+            #     messages.success(request, 'Check Information provided in Bride')
+            #     return HttpResponseRedirect(reverse('certification:add-couple'))
             return HttpResponseRedirect(reverse('certification:dash'))
         else:
             messages.success(request, 'Check Information provided in Groom')
@@ -59,15 +61,30 @@ class AddWedView(View):
         if wed.is_valid():
             gr = request.POST.get('groom')
             bd = request.POST.get('bride')
-            if not Wed.objects.filter(groom=gr).exists() or not Wed.objects.filter(bride=bd).exists:
-                if Wed.objects.filter(is_divorsed= True).exists:
+            # if not Wed.objects.filter(groom=gr).exists() and not Wed.objects.filter(groom=gr).exists():
+            #     wed.save(commit=True)
+            #     Couple.objects.filter(Nat_ID = gr).update(status='Married')
+            #     Couple.objects.filter(Nat_ID = bd).update(status='Married')
+            #     messages.success(request, ' Saved ')
+            #     return HttpResponseRedirect(reverse('certification:dashboard'))
+            # elif not Wed.objects.filter(groom=gr).exists() and Wed.objects.filter(groom=gr).exists():
+            #     pass
+            # elif Wed.objects.filter(groom=gr).exists() and not Wed.objects.filter(groom=gr).exists():
+            #     pass
+            # else:
+            #     pass
+            Groom = Wed.objects.filter(groom=gr)
+            Bride = Wed.objects.filter(groom=bd)
+
+            if  Wed.objects.filter(groom=gr).exists() or  Wed.objects.filter(bride = bd).exists:
+                if Groom.groom.status == 'Divorse' and Bride.bride.status == 'Divorse':
                     wed.save(commit=True)
-                    Couple.objects.filter(Nat_ID = gr).update(status='Married')
+                    Groom.groom.status.update(status='Married')
                     Couple.objects.filter(Nat_ID = bd).update(status='Married')
                     messages.success(request, ' Saved ')
                     return HttpResponseRedirect(reverse('certification:dashboard'))
                 else:
-                    messages.success(request, 'Unfinilized Divorse Process')
+                    messages.success(request, 'Data Not Found')
                     return HttpResponseRedirect(reverse('certification:add-wed'))
             else:
                 messages.success(request, 'Unfinilized Divorse Process')
@@ -77,7 +94,6 @@ class AddDivorseView(View):
     def get(self, request):
         context ={
             'divorse' : DivorseForm(),
-            
         }
         return render(request,'add-divorse.html',context)
     def post(self, request):
