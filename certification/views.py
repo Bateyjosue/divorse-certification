@@ -13,7 +13,23 @@ class IndexView(View):
 
 class SearchDocumentView(View):
     def get(self, request):
-        return render(request,'search-doc.html')
+        CERTIFICATE = request.GET['certificate']
+        if  CERTIFICATE == 'Weddings':
+            search = Wed.objects.filter(wed_matricule = request.GET.get('search'))
+            search_divorse = None
+        elif  CERTIFICATE == 'Divorse':
+            search_divorse = Divorse.objects.filter(divorse_matricule = request.GET.get('search')) 
+            search = None
+        context ={
+            'wed' : search,
+            'divorse': search_divorse,
+            'CERTIFICATE' : CERTIFICATE,
+        }
+        return render(request,'search-doc.html', context)
+
+class CertificateView(View):
+    def get(self, request):
+        return render(request,'certificate.html')
 
 class DashboardView(View):
     def get(self, request):

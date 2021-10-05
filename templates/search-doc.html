@@ -1,6 +1,126 @@
 {% extends 'base.html' %}
 {% block content %}
+    <div class="ui  loading search" style="margin-top:20px;margin-bottom:50px">
+        <form action="" method="get">
+            {% csrf_token %}
+            <div class="ui large icon input" 
+                style="
+                    max-width: 60vw !important; 
+                    position:absolute;
+                    right:0;
+                    left:0;
+                    align-items: center;
+                    margin:auto;
 
-  
-    
+                
+                "
+            >
+            <input class=" ui fluid input prompt" name="search" type="search" placeholder="Your Matricule..."
+            
+                style="
+                    border-radius:0% !important;
+                    border-top-left-radius:50px !important;
+                    border-bottom-left-radius:50px !important;
+                "
+            >
+            <i class="search icon"></i>
+                <div class="field">
+                    <select class="ui fluid search dropdown" name="certificate"
+                        style="
+                            height: 42px;
+                            background: #fff;
+                            color: gray;
+                            padding: 0px 20px;
+                        "
+                    >
+                      <option value="">---</option>
+                      <option value="Weddings">Weddings</option>
+                      <option value="Divorse">Divorse</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+        <div class="results"></div>
+    </div>
+    {% if CERTIFICATE == 'Weddings' %}
+        {% for weds in wed %}
+            <div class="ui large teal container" 
+            style="
+                background: white;
+                margin-top: 100px;
+                padding:0px 50px 0px 0px;
+            ">
+                <div class="ui  divided teal items">
+                    <div class="item">
+                        <div class="image">
+                        <img src="{{weds.groom.photo.url}}">
+                        </div>
+                        <div class="content" style="padding:20px 20px 20px 0px;">
+                            <a class="header">{{weds.wed_matricule}}</a>
+                            <div class="meta">
+                                <span class="cinema">{{weds.groom.full_name}} & {{weds.bride.full_name}}</span>
+                            </div>
+                            <div class="description">
+                                <p>{{weds.term}}</p>
+                                <p>{{weds.place}}</p>
+                                <p>{{weds.officer}}</p>
+                                <p>{{weds.created_at}}</p>
+                            </div>
+                            <div class="extra">
+                                <div class="ui right floated primary button">
+                                    Download
+                                    <i class="right chevron icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            {% empty %}
+                <div class="ui medium " style="margin:60px;padding-top:50px;">
+                    Data Not Found...
+                </div>
+        {% endfor %}  
+    {% elif CERTIFICATE == 'Divorse' %}
+        {% for divorses in divorse %}
+            <div class="ui large teal container" 
+            style="
+                background: white;
+                margin-top: 100px;
+                padding:0px 50px 0px 0px;
+            ">
+                <div class="ui  divided teal items">
+                    <div class="item">
+                        <div class="image">
+                        <img src="{{divorses.wed.groom.photo.url}}">
+                        </div>
+                        <div class="content" style="padding:20px 20px 20px 0px;">
+                            <a class="header">{{divorses.divorse_matricule}}</a>
+                            <div class="meta">
+                                <span class="cinema">{{divorses.wed.groom.full_name}} & {{divorses.wed.bride.full_name}}</span>
+                            </div>
+                            <div class="description">
+                                <p>{{divorses.sentence}}</p>
+                                <p>{{divorses.created_at}}</p>
+                            </div>
+                            <div class="extra">
+                                <div class="ui right floated primary button">
+                                    <a href="{% url 'certification:certificate' %}">Download</a>
+                                    <i class="right chevron icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            {% empty %}
+                <div class="ui medium " style="margin:60px;padding-top:50px;">
+                    Data Not Found...
+                </div>
+        {% endfor %}  
+        {% else %}
+            <div class="ui medium " style="margin:60px;padding-top:50px;">
+                Data Not Found... <br><p>Fill the search form and press enter...</p>
+            </div>
+        {% endif %}
 {% endblock %}

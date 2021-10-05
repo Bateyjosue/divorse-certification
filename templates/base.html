@@ -172,7 +172,7 @@
         <a class="toc item">
           <i class="sidebar icon"></i>
         </a>
-        <a class="active item">Home</a>
+        <a href="/" class="active item">Home</a>
         <a class="item">About</a>
         <!-- <a class="item">Company</a>
         <a class="item">Careers</a>
@@ -184,7 +184,12 @@
     </div>
     {%block content%}
     {%endblock%}
-    <div class="ui inverted vertical footer segment">
+    <div class="ui fixed bottom sticky inverted vertical footer segment"
+      style="
+        padding:0px !important;
+        padding-bottom:20px !important;
+      "
+    >
       <div class="ui container">
         <div class="ui stackable inverted divided equal height stackable grid">
           <div class="three wide column">
