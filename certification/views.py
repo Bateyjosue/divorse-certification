@@ -1,10 +1,14 @@
 from django.http.response import HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 from .models import *
 from .forms import CoupleForm, WedForm, DivorseForm
 from django.contrib import messages
 from django.urls import reverse
+
+from xhtml2pdf import pisa 
+from django.template.loader import get_template
 # Create your views here.
 
 class IndexView(View):
@@ -12,24 +16,43 @@ class IndexView(View):
         return render(request,'index.html')
 
 class SearchDocumentView(View):
-    def get(self, request):
-        CERTIFICATE = request.GET['certificate']
-        if  CERTIFICATE == 'Weddings':
-            search = Wed.objects.filter(wed_matricule = request.GET.get('search'))
-            search_divorse = None
-        elif  CERTIFICATE == 'Divorse':
-            search_divorse = Divorse.objects.filter(divorse_matricule = request.GET.get('search')) 
-            search = None
+    pass
+def searchCertificate(request):
+    if request.method == 'GET':
+        cert = request.GET.get('certificates-category')
+        # if  CERTIFICATE == 'Weddings':
+        search = Wed.objects.filter(wed_matricule = request.GET.get('search'))
+        # search_divorse = None
+        # elif  CERTIFICATE == 'Divorse':
+        search_divorse = Divorse.objects.filter(divorse_matricule = request.GET.get('search')) 
+        # search = None
         context ={
             'wed' : search,
             'divorse': search_divorse,
-            'CERTIFICATE' : CERTIFICATE,
+            'CERTIFICATE' : cert,
         }
         return render(request,'search-doc.html', context)
 
 class CertificateView(View):
-    def get(self, request):
-        return render(request,'certificate.html')
+    def get(self, request, pk):
+        template_path = 'certificate.html'
+        wed = Wed.objects.filter(wed_matricule = pk)
+        divorse = Divorse.objects.filter(divorse_matricule = pk)
+        context = {
+            'wed': wed,
+            'divorse': divorse
+        }
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'filename='+pk+'.pdf'
+
+        template = get_template(template_path)
+        html = template.render(context)
+
+        pisa_status = pisa.CreatePDF(html, dest=response )
+
+        if pisa_status.err:
+            return HttpResponse('We had some errors <pre>' + html + '</pre>')
+        return response
 
 class DashboardView(View):
     def get(self, request):
@@ -49,17 +72,16 @@ class DashboardView(View):
 class AddCoupleView(View):
     def get(self, request):
         context = {
-            'groom': CoupleForm(),
-            'bride': CoupleForm(),
+            'couple': CoupleForm(),
         }
         return render(request,'add-couple.html', context)
 
     def post(self, request):
-        groom = CoupleForm(request.POST)
+        couple = CoupleForm(request.POST)
         # bride = CoupleForm(request.POST)
-        if  self.groom.is_valid():
-            self.groom.save(commit=True)
-            messages.success(request, 'Data saved successfully [Groom]')
+        if  couple.is_valid():
+            couple.save(commit=True)
+            messages.success(request, 'Data saved successfully')
             # if bride.is_valid():
             #     bride.save(commit=True)
             #     messages.success(request, 'Data saved successfully [bride]')
@@ -68,7 +90,7 @@ class AddCoupleView(View):
             #     return HttpResponseRedirect(reverse('certification:add-couple'))
             return HttpResponseRedirect(reverse('certification:dash'))
         else:
-            messages.success(request, 'Check Information provided in Groom')
+            messages.success(request, 'Check Information provided')
             return HttpResponseRedirect(reverse('certification:add-couple'))
 
 class AddWedView(View):
@@ -80,33 +102,18 @@ class AddWedView(View):
     def post(self, request):
         wed = WedForm(request.POST)
         if wed.is_valid():
-            gr = request.POST.get('groom')
-            bd = request.POST.get('bride')
-            # if not Wed.objects.filter(groom=gr).exists() and not Wed.objects.filter(groom=gr).exists():
-            #     wed.save(commit=True)
-            #     Couple.objects.filter(Nat_ID = gr).update(status='Married')
-            #     Couple.objects.filter(Nat_ID = bd).update(status='Married')
-            #     messages.success(request, ' Saved ')
-            #     return HttpResponseRedirect(reverse('certification:dashboard'))
-            # elif not Wed.objects.filter(groom=gr).exists() and Wed.objects.filter(groom=gr).exists():
-            #     pass
-            # elif Wed.objects.filter(groom=gr).exists() and not Wed.objects.filter(groom=gr).exists():
-            #     pass
-            # else:
-            #     pass
-            Groom = Wed.objects.filter(groom=gr)
-            Bride = Wed.objects.filter(groom=bd)
-
-            if  Wed.objects.filter(groom=gr).exists() or  Wed.objects.filter(bride = bd).exists:
-                if Groom.groom.status == 'Divorse' and Bride.bride.status == 'Divorse':
-                    wed.save(commit=True)
-                    Groom.groom.status.update(status='Married')
-                    Couple.objects.filter(Nat_ID = bd).update(status='Married')
-                    messages.success(request, ' Saved ')
-                    return HttpResponseRedirect(reverse('certification:dashboard'))
-                else:
-                    messages.success(request, 'Data Not Found')
-                    return HttpResponseRedirect(reverse('certification:add-wed'))
+            couple = request.POST.get('couple')
+            couples = Wed.objects.filter(couple=couple)
+            if not Wed.objects.filter(couple=couple).exists():
+                # if couples.couple.groom_status == 'Divorse' and couples.bride_status == 'Divorse':
+                wed.save(commit=True)
+                couples.couple.groom_status.update(groom_status='Married')
+                Couple.objects.filter(groom_Nat_ID = couple).update(groom_status='Married')
+                messages.success(request, ' Saved ')
+                return HttpResponseRedirect(reverse('certification:dashboard'))
+                # else:
+                #     messages.success(request, 'Data Not Found')
+                #     return HttpResponseRedirect(reverse('certification:add-wed'))
             else:
                 messages.success(request, 'Unfinilized Divorse Process')
                 return HttpResponseRedirect(reverse('certification:add-wed'))

@@ -53,8 +53,7 @@
             <thead>
               <tr>
                 <th>Wed Matrices</th>
-                <th>Bride</th>
-                <th>Groom</th>
+                <th>Couple</th>
                 <th>Divorsed</th>
                 <th>Registered</th>
                 <th>Reports</th>
@@ -69,11 +68,12 @@
                         </div>
                         </td> -->
                         <td>{{weds.wed_matricule}}</td>
-                        <td>{{weds.bride}}</td>
-                        <td>{{weds.groom}}</td>
+                        <td>{{weds.couple}}</td>
                         <td>{{weds.is_divorsed}}</td>   
                         <td>{{weds.created_at}}</td> 
-                        <td><i class="icon red print" style="font-size: 18px;"></i>Print</td>              
+                        <td>
+                          <a href="certificate/{{weds.wed_matricule}}"><i class="icon red print" style="font-size: 18px;"></i>Print</a> 
+                        </td>              
                     </tr>    
                     {% empty %}
                     <tr>
@@ -148,13 +148,13 @@
                             <input type="checkbox"> <label></label>
                         </div>
                         </td> -->
-                        <td>{{couples.Nat_ID}}</td>
-                        <td>{{couples.full_name}}</td>
-                        <td>{{couples.dob|timesince}}</td>
-                        <td>{{couples.phone}}</td>
-                        <td>{{couples.mail}}</td>
-                        <td><img class="ui avatar image" src="{{couples.photo.url}}" alt=""></td>
-                        <td>{{couples.status}}</td>
+                        <td>{{couples.groom_Nat_ID}}/{{couples.bride_Nat_ID}}</td>
+                        <td>{{couples.groom_full_name}}/{{couples.bride_full_name}}</td>
+                        <td>{{couples.groom_dob|timesince}}/{{couples.bride_dob|timesince}}</td>
+                        <td>{{couples.groom_phone}}/{{couples.bride_phone}}</td>
+                        <td>{{couples.groom_mail|truncatechars:10}}/{{couples.bride_mail|truncatechars:10}}</td>
+                        <td><img class="ui avatar image" src="{{couples.groom_photo.url}}" alt="">/<img class="ui avatar image" src="{{couples.bride_photo.url}}" alt=""></td>
+                        <td>{{couples.groom_status}}/{{couples.bride_status}}</td>
                     </tr>  
                     {% empty %}
                     <tr>

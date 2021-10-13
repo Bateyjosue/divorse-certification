@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{pk}}</title>
+</head>
+<body>
+    <div class="flag" style="text-align: center;">
+        <img src="static/images/flag.jpg" alt="flag" height="80">
+
+        <img src="static/images/armory.png" alt="armory" height="80">
+    </div>
+    <h1><center>REPUBLIQUE DEMOCRATIQUE DU CONGO </center></h1>
+    <h2> <center> PROVINCE DU SUD KIVU </center> </h2>
+    <h2> <center> VILLE DE BUKAVU </center> </h2>
+    <h2> <center> Commune d'IBANDA </center> </h2>
+    <hr>
+    {% if wed %}
+        {% for wed in wed %}
+            <h2> <center> Certificat de Mariage</center> </h2>
+            <div style="border:2px solid rgb(243, 218, 218); text-align: center;">
+                <img src="media/{{wed.couple.groom_photo}}" alt="" height="200" >
+                <img src="{{wed.couple.bride_photo.path}}" alt="" height="200">
+            </div>
+            <div>
+                Je sousigne <b>{{wed.officer}}</b>  avoir benie et unir Mr <b>{{wed.couple.groom_full_name}}</b>  a Mme <b>{{wed.couple.bride_full_name}}</b>  par le lien du mariage selon l'article
+                12 du consitution de 1980 revise en 2009, par la loi qui me sont confere je vous declare Mari et Femme en ce date du <B>{{wed.created_at}}</B> 
+            </div>
+        {% endfor %}
+    {% elif divorse %}
+        <h2> <center> Certificat de Divorse</center> </h2>
+    {% endif %}
+</body>
+</html>

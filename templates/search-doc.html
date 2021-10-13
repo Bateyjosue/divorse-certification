@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="ui  loading search" style="margin-top:20px;margin-bottom:50px">
-        <form action="" method="get">
+        <form action="certificates" method="GET">
             {% csrf_token %}
             <div class="ui large icon input" 
                 style="
@@ -10,9 +10,7 @@
                     right:0;
                     left:0;
                     align-items: center;
-                    margin:auto;
-
-                
+                    margin:auto;  
                 "
             >
             <input class=" ui fluid input prompt" name="search" type="search" placeholder="Your Matricule..."
@@ -25,7 +23,7 @@
             >
             <i class="search icon"></i>
                 <div class="field">
-                    <select class="ui fluid search dropdown" name="certificate"
+                    <select class="ui fluid search dropdown" name="certificates-category"
                         style="
                             height: 42px;
                             background: #fff;
@@ -52,13 +50,14 @@
             ">
                 <div class="ui  divided teal items">
                     <div class="item">
-                        <div class="image">
-                        <img src="{{weds.groom.photo.url}}">
+                        <div class="image" style="display:inline-block;">
+                            <img src="{{weds.couple.groom_photo.url}}">
+                            <!-- <img src="{{weds.couple.bride_photo.url}}"> -->
                         </div>
                         <div class="content" style="padding:20px 20px 20px 0px;">
                             <a class="header">{{weds.wed_matricule}}</a>
                             <div class="meta">
-                                <span class="cinema">{{weds.groom.full_name}} & {{weds.bride.full_name}}</span>
+                                <span class="cinema">{{weds.couple.groom_full_name}} & {{weds.couple.bride_full_name}}</span>
                             </div>
                             <div class="description">
                                 <p>{{weds.term}}</p>
@@ -68,8 +67,10 @@
                             </div>
                             <div class="extra">
                                 <div class="ui right floated primary button">
-                                    Download
-                                    <i class="right chevron icon"></i>
+                                    <a href="certificate/{{weds.pk}}" style="color: white;">
+                                        Download
+                                        <i class="right chevron icon"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -105,7 +106,8 @@
                             </div>
                             <div class="extra">
                                 <div class="ui right floated primary button">
-                                    <a href="{% url 'certification:certificate' %}">Download</a>
+                                    <a href="certificate/{{divorses.pk}}">Download</a>
+                                    
                                     <i class="right chevron icon"></i>
                                 </div>
                             </div>

@@ -6,13 +6,9 @@
        <form class="ui form" action="" method="post">
            {% csrf_token %}
            <div class="ui  two column grid" >
-                <div class="ui eight wide column ">
+                <div class="ui twelve wide column ">
                     <h3>Groom Information</h3>
-                    {{groom}}
-                </div>
-                <div class="ui eight wide column ">
-                    <h3>Bride Information</h3>
-                    <!-- {{bride}} -->
+                    {{couple}}
                 </div>
            </div>
            <br>

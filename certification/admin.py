@@ -6,13 +6,14 @@ from .models import Wed, Couple,Divorse
 @admin.register(Wed)
 class WedAdmin(admin.ModelAdmin):
     fields =[]
-    list_display = ('pk', 'bride', 'groom','term', 'place', 'officer', 'is_divorsed')
+    list_display = ('pk', 'couple','term', 'place', 'officer', 'is_divorsed')
 
 
 @admin.register(Couple)
 class CoupleAdmin(admin.ModelAdmin):
     fields =[]
-    list_display = ('Nat_ID', 'full_name', 'dob','phone','mail','address','status','created_at','updated_at')
+    list_display = ('groom_Nat_ID', 'groom_full_name', 'groom_dob','groom_phone','groom_photo','groom_mail','groom_address','groom_status',
+    'bride_Nat_ID', 'bride_full_name', 'bride_dob','bride_phone','bride_mail','bride_address','bride_status','created_at','updated_at')
 
 
 @admin.register(Divorse)

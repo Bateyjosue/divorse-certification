@@ -12,28 +12,35 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Couple(models.Model):
-    Nat_ID = models.CharField(max_length=20,blank=False,null=False, unique=True)
-    
-    full_name = models.CharField(max_length=50)
-    dob = models.DateTimeField()
-    phone = models.CharField(max_length=50, unique=True)
-    mail = models.EmailField(max_length=50, unique=True)
-    photo = models.ImageField(upload_to='couple_images/')
-    address = models.CharField(max_length=200)
-
+    groom_Nat_ID = models.CharField(max_length=20,blank=False,null=False, unique=False)
+    groom_full_name = models.CharField(max_length=50)
+    groom_dob = models.DateTimeField(blank=True, null=True)
+    groom_phone = models.CharField(max_length=50, unique=True)
+    groom_mail = models.EmailField(max_length=50, unique=True)
+    groom_photo = models.ImageField(upload_to='couple_images/')
+    groom_address = models.CharField(max_length=200)
     choice_status = (('Pending', 'Pending'), ('Married', 'Married'), ('Divorse', 'Divorse'))
-    status = models.CharField(max_length=50,choices=choice_status, default=('Pending'))
+    groom_status = models.CharField(max_length=50,choices=choice_status, default=('Pending'))
+
+    bride_Nat_ID = models.CharField(max_length=20,blank=False,null=False, unique=False)
+    bride_full_name = models.CharField(max_length=50)
+    bride_dob = models.DateTimeField(blank=True, null=True)
+    bride_phone = models.CharField(max_length=50, unique=True)
+    bride_mail = models.EmailField(max_length=50, unique=True)
+    bride_photo = models.ImageField(upload_to='couple_images/')
+    bride_address = models.CharField(max_length=200)
+    choice_status = (('Pending', 'Pending'), ('Married', 'Married'), ('Divorse', 'Divorse'))
+    bride_status = models.CharField(max_length=50,choices=choice_status, default=('Pending'))
 
     created_at  = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)    
 
     def __str__(self):
-        return self.Nat_ID 
+        return self.groom_Nat_ID + '/'+self.bride_Nat_ID 
 
 class Wed(models.Model):
     wed_matricule = models.CharField(max_length=50,primary_key=True, null=False, blank=True)
-    bride = models.ForeignKey(Couple, on_delete=models.CASCADE, related_name='brides')
-    groom = models.ForeignKey(Couple, on_delete=models.CASCADE,related_name='grooms')
+    couple = models.ForeignKey(Couple, on_delete=models.CASCADE)
     term =  models.CharField(max_length=200)
     place = models.CharField(max_length=200,help_text="DRC/KINSHASA/GOMBE")
     officer = models.CharField(max_length=200,help_text="Officer full-name")
