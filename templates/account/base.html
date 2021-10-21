@@ -27,7 +27,7 @@
     </div>
     {% endif %}
 
-    <div>
+    <!-- <div>
       <strong>Menu:</strong>
       <ul class="ui horizontal link list">
         {% if user.is_authenticated %}
@@ -38,7 +38,7 @@
         <li class="item"><a href="{% url 'account_signup' %}">Sign Up</a></li>
         {% endif %}
       </ul>
-    </div>
+    </div> -->
     {% block content %}
     {% endblock %}
     {% endblock %}

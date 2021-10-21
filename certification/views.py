@@ -3,12 +3,20 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 from .models import *
-from .forms import CoupleForm, WedForm, DivorseForm
+from .forms import CoupleForm, WedForm, DivorseForm, PaymentForm, UserForm
+from django.views.generic import CreateView, UpdateView
 from django.contrib import messages
-from django.urls import reverse
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse, reverse_lazy
 
 from xhtml2pdf import pisa 
 from django.template.loader import get_template
+
+from django.core.mail import send_mail
+
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 # Create your views here.
 
 class IndexView(View):
@@ -35,24 +43,36 @@ def searchCertificate(request):
 
 class CertificateView(View):
     def get(self, request, pk):
-        template_path = 'certificate.html'
-        wed = Wed.objects.filter(wed_matricule = pk)
-        divorse = Divorse.objects.filter(divorse_matricule = pk)
-        context = {
-            'wed': wed,
-            'divorse': divorse
-        }
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'filename='+pk+'.pdf'
+        if Payment.objects.filter(Divorse = pk).exists() or Payment.objects.filter(mariage = pk).exists():
+            d= Payment.objects.filter(Divorse = pk)
+            m = Payment.objects.filter(mariage = pk)
+            # if d.is_done or m.is_done:
+            template_path = 'certificate.html'
+            wed = Wed.objects.filter(wed_matricule = pk)
+            divorse = Divorse.objects.filter(divorse_matricule = pk)
+            context = {
+                'wed': wed,
+                'divorse': divorse
+            }
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = 'filename='+pk+'.pdf'
 
-        template = get_template(template_path)
-        html = template.render(context)
+            template = get_template(template_path)
+            html = template.render(context)
 
-        pisa_status = pisa.CreatePDF(html, dest=response )
+            pisa_status = pisa.CreatePDF(html, dest=response )
 
-        if pisa_status.err:
-            return HttpResponse('We had some errors <pre>' + html + '</pre>')
-        return response
+            if pisa_status.err:
+                return HttpResponse('We had some errors <pre>' + html + '</pre>')
+            return response
+        return redirect('certificates/payment')
+class PaymentView(CreateView):
+    model = Payment
+    form_class = PaymentForm
+    template_name = 'payment.html'
+    sucess_message = 'Added'
+    error_message = 'Error :: Not saved'
+    # redirect('dashboard')
 
 class DashboardView(View):
     def get(self, request):
@@ -69,29 +89,83 @@ class DashboardView(View):
         else:
             return redirect('account_login')
 
-class AddCoupleView(View):
-    def get(self, request):
-        context = {
-            'couple': CoupleForm(),
-        }
-        return render(request,'add-couple.html', context)
+# class AddCoupleView(View):
+#     def get(self, request):
+#         context = {
+#             'couple': CoupleForm(),
+#         }
+#         return render(request,'add-couple.html', context)
 
-    def post(self, request):
-        couple = CoupleForm(request.POST)
-        # bride = CoupleForm(request.POST)
-        if  couple.is_valid():
-            couple.save(commit=True)
-            messages.success(request, 'Data saved successfully')
-            # if bride.is_valid():
-            #     bride.save(commit=True)
-            #     messages.success(request, 'Data saved successfully [bride]')
-            # else:
-            #     messages.success(request, 'Check Information provided in Bride')
-            #     return HttpResponseRedirect(reverse('certification:add-couple'))
-            return HttpResponseRedirect(reverse('certification:dash'))
-        else:
-            messages.success(request, 'Check Information provided')
-            return HttpResponseRedirect(reverse('certification:add-couple'))
+#     def post(self, request):
+#         couple = CoupleForm(request.POST)
+#         # bride = CoupleForm(request.POST)
+#         if  couple.is_valid():
+#             couple.save(commit=True)
+#             messages.success(request, 'Data saved successfully')
+#             # if bride.is_valid():
+#             #     bride.save(commit=True)
+#             #     messages.success(request, 'Data saved successfully [bride]')
+#             # else:
+#             #     messages.success(request, 'Check Information provided in Bride')
+#             #     return HttpResponseRedirect(reverse('certification:add-couple'))
+#             return HttpResponseRedirect(reverse('certification:dash'))
+#         else:
+#             messages.success(request, 'Check Information provided')
+#             return HttpResponseRedirect(reverse('certification:add-couple'))
+
+class AddCoupleView(CreateView):
+    model = Couple
+    form_class = CoupleForm
+    template_name = 'add-couple.html'
+    sucess_message = 'Added'
+    error_message = 'Error :: Not saved'
+    success_url = reverse_lazy('certification:dashboard')
+
+class UpdateUserView(SuccessMessageMixin, UpdateView):
+    model = User
+    form_class = UserForm
+    template_name = 'profil.html'
+    success_message = 'Updated'
+    success_url = reverse_lazy('certification:dashboard')
+    # def get(self, request, pk):
+    #     context = {
+    #             'form': UserForm(request.GET, instance = request.user)
+    #         }
+    #     return render(request, 'profil.html', context)
+    # def POST(self, request, pk):
+    #     form_class = UserForm(request.POST, instance = request.user)
+    #     if form_class.is_valid():
+    #         form_class.save()
+    #         messages.success(request, ' Successfully')
+    #         return redirect(to = 'dashboard')
+    #     else:
+    #         messages.success(request, ' Not Save')
+    #         return redirect(to = 'profile')
+        # template_name = 'profil.html'
+        # return HttpResponseRedirect(reverse('dashboard'))
+
+#     def get(self, request):
+#         context = {
+#             'couple': CoupleForm(),
+#         }
+#         return render(request,'add-couple.html', context)
+
+#     def post(self, request):
+#         couple = CoupleForm(request.POST)
+#         # bride = CoupleForm(request.POST)
+#         if  couple.is_valid():
+#             couple.save(commit=True)
+#             messages.success(request, 'Data saved successfully')
+#             # if bride.is_valid():
+#             #     bride.save(commit=True)
+#             #     messages.success(request, 'Data saved successfully [bride]')
+#             # else:
+#             #     messages.success(request, 'Check Information provided in Bride')
+#             #     return HttpResponseRedirect(reverse('certification:add-couple'))
+#             return HttpResponseRedirect(reverse('certification:dash'))
+#         else:
+#             messages.success(request, 'Check Information provided')
+#             return HttpResponseR
 
 class AddWedView(View):
     def get(self, request):
@@ -100,6 +174,8 @@ class AddWedView(View):
         }
         return render(request,'add-wed.html',context)
     def post(self, request):
+        cou = Couple.objects.filter(pk = request.POST.get('couple'))
+
         wed = WedForm(request.POST)
         if wed.is_valid():
             couple = request.POST.get('couple')
@@ -107,9 +183,17 @@ class AddWedView(View):
             if not Wed.objects.filter(couple=couple).exists():
                 # if couples.couple.groom_status == 'Divorse' and couples.bride_status == 'Divorse':
                 wed.save(commit=True)
+               
                 couples.couple.groom_status.update(groom_status='Married')
-                Couple.objects.filter(groom_Nat_ID = couple).update(groom_status='Married')
+                Couple.objects.filter(pk = couple).update(groom_status='Married')
                 messages.success(request, ' Saved ')
+                send_mail(
+                    'Marriage comfirmation',
+                    request.POST.get('wed_matricule') + ' is your certificate matricule',
+                    'josuebatey19@gmail.com',
+                    [request.POST.get('wed').couple.groom_mail, 'josuebatey19@gmail.com'],
+                    fail_silently=False,
+                )
                 return HttpResponseRedirect(reverse('certification:dashboard'))
                 # else:
                 #     messages.success(request, 'Data Not Found')
@@ -129,8 +213,11 @@ class AddDivorseView(View):
         if divorse.is_valid():
             divorse.save(commit=True)
             weds = request.POST.get('wed')
+            couple = request.POST.get('couple')
             if Wed.objects.filter(wed_matricule = weds).exists():
                 Wed.objects.filter(wed_matricule = weds).update(is_divorsed= True)
+                Couple.objects.filter(pk = couple).update(bride_status= True, groom_status= True)
+                # Wed.objects.filter(wed_matricule = weds).update(weds.)
                 messages.success(request, 'Saved')
                 return HttpResponseRedirect(reverse('certification:dashboard'))
         else:

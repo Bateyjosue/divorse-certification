@@ -7,11 +7,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{pk}}</title>
 </head>
+<style>
+    .top-sticky{
+        position:fixed;
+        top:0px;
+        right:0px;
+        left:0px;
+        background: #000 !important;
+    }
+</style>
 <body>
-    <div class="flag" style="text-align: center;">
-        <img src="static/images/flag.jpg" alt="flag" height="80">
-
-        <img src="static/images/armory.png" alt="armory" height="80">
+    <div class="flag" style="">
+        <div style=" display:flex !important;">
+            <div class="top-sticky" style="text-align: left;background: #000 !important;">
+                <img src="static/images/flag.jpg" alt="flag" height="80">
+            </div>
+            <div class="top-sticky" style="text-align: right;">
+                <img src="static/images/armory.png" alt="armory" height="80">
+            </div>
+        </div>
     </div>
     <h1><center>REPUBLIQUE DEMOCRATIQUE DU CONGO </center></h1>
     <h2> <center> PROVINCE DU SUD KIVU </center> </h2>

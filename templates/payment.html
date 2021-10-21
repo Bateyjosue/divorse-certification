@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+            <link rel="stylesheet" href="{% static 'css/style.css'%}">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+        <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    </head>
+    <body>
+        <main class="ui container">
+            <form action="" method="post" class="ui form" style="margin-top:30px; line-height: 30px;">
+                {% csrf_token %}
+                <div class="ui  two column grid" >
+                    <div class="ui eight centered wide column ">
+                        <h3>Payment Information</h3>
+                        {{form}}
+                        <br>
+                        <div>
+                            <input class="ui small  fluid  button blue" type="submit" value="Submit">
+                        </div>
+                    </div>
+               </div>
+            </form>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </main>
+    </body>
+</html>
