@@ -7,22 +7,24 @@
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
-<div class="ui  two column grid" >
-  <div class="ui eight centered wide column ">  
-    <h1 class="ui " style="background-color: blue;
+<div class="ui  two column grid" style="margin-top: 60px">
+  <div class="ui five centered wide column " style="
+  border: 0px black solid;
+">  
+    <h1 class="ui " style="background-color: rgb(55, 133, 216);
       padding: 10px 20px;
       color: white;
-      margin-top: 50px;
+      ;
     ">{% trans "Sign In" %}</h1>
 
-    {% get_providers as socialaccount_providers %}
+    <!-- {% get_providers as socialaccount_providers %} -->
 
-    {% if socialaccount_providers %}
+    <!-- {% if socialaccount_providers %}
     <p>{% blocktrans with site.name as site_name %}Please sign in with one
     of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-    for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+    for a {{ site_name }} account and sign in below:{% endblocktrans %}</p> -->
 
-    <div class="socialaccount_ballot ui header">
+    <!-- <div class="socialaccount_ballot ui header">
 
       <ul class="socialaccount_providers ui list">
         {% include "socialaccount/snippets/provider_list.html" with process="login" %}
@@ -30,7 +32,7 @@
 
       <div class="login-or">{% trans 'or' %}</div>
 
-    </div>
+    </div> -->
 
     {% include "socialaccount/snippets/login_extra.html" %}
 

@@ -17,10 +17,19 @@
                     {{wed}}
                 </div>
            </div>
+           
            <br>
            <div>
                <input class="ui small  fluid  button blue" type="submit" value="Submit">
            </div>
        </form>
     </div>
+    {% if messageSent %}
+        <div>
+            <h3>
+                <strong> Email Sucessfully Sent</strong>
+                <p>Your message was sent successfully sent to {{forn.cleaned_data.to}}</p>
+            </h3>
+        </div>
+    {% endif %}
 {% endblock %}

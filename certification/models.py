@@ -85,7 +85,8 @@ class Divorse(models.Model):
     divorse_matricule =models.CharField(max_length=50,primary_key=True)
     wed = models.OneToOneField(Wed, on_delete=models.CASCADE, unique=True)
     sentence = models.BooleanField(default=False)
-
+    magistrate = models.CharField(max_length=50, default="John Kayumbi")
+    signature = models.ImageField(upload_to='signature/', default="static/images/signature.jpeg")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

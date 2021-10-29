@@ -1,31 +1,46 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
     <title>{{pk}}</title>
 </head>
 <style>
-    .top-sticky{
+    .flag{
         position:fixed;
         top:0px;
         right:0px;
         left:0px;
         background: #000 !important;
     }
+    .flag{
+    }
+    .text-center{
+        text-align:center;
+        font-size: 14px;
+        font-family: serif;
+    }
+    strong{
+        font-size: 16px;
+    }
+    footer{
+        text-align:left;
+        font-size: 14px;
+        font-family: serif;
+        background-image:url('static/images/stamp.jpg');
+    }
 </style>
 <body>
-    <div class="flag" style="">
-        <div style=" display:flex !important;">
-            <div class="top-sticky" style="text-align: left;background: #000 !important;">
-                <img src="static/images/flag.jpg" alt="flag" height="80">
-            </div>
-            <div class="top-sticky" style="text-align: right;">
+    <div class="flag fixed-top" style="">
+                <img src="static/images/flag.jpg" alt="flag" height="80" style="margin-right: 60px !important;">
+            
                 <img src="static/images/armory.png" alt="armory" height="80">
-            </div>
-        </div>
     </div>
     <h1><center>REPUBLIQUE DEMOCRATIQUE DU CONGO </center></h1>
     <h2> <center> PROVINCE DU SUD KIVU </center> </h2>
@@ -39,13 +54,62 @@
                 <img src="media/{{wed.couple.groom_photo}}" alt="" height="200" >
                 <img src="{{wed.couple.bride_photo.path}}" alt="" height="200">
             </div>
-            <div>
-                Je sousigne <b>{{wed.officer}}</b>  avoir benie et unir Mr <b>{{wed.couple.groom_full_name}}</b>  a Mme <b>{{wed.couple.bride_full_name}}</b>  par le lien du mariage selon l'article
-                12 du consitution de 1980 revise en 2009, par la loi qui me sont confere je vous declare Mari et Femme en ce date du <B>{{wed.created_at}}</B> 
+            <div class="text-center">
+                <!-- Je sousigne <b>{{wed.officer}}</b>  avoir benie et unir Mr <b>{{wed.couple.groom_full_name}}</b>  a Mme <b>{{wed.couple.bride_full_name}}</b>  par le lien du mariage selon l'article
+                12 du consitution de 1980 revise en 2009, par la loi qui me sont confere je vous declare Mari et Femme en ce date du <B>{{wed.created_at}}</B>  -->
+                This certifies that,
+                <strong>{{wed.couple.bride_full_name}}</strong> & <strong>{{wed.couple.groom_full_name}}</strong>
+                <p>were United in marriage on, </p>
+                <strong>{{wed.created_at}}</strong> <p>at the city hall of IBANDA.</p>
+                <p>The ceremony was witnessed</p>
+                <div>
+                    by:<strong>Witness 1: Batey Joh</strong> <br>
+                    signature <br><strong> <img src="static/images/witness1.png" width="200" height="100"alt="officer-signature" srcset=""> </strong>
+                </div>
+                <strong>Witness 2: Batey Annah</strong> <br>
+                signature <br><strong> <img src="static/images/witness2.png" width="200" height="100"alt="officer-signature" srcset=""> </strong>
+                
+                
             </div>
+            <footer>
+                Celebrated by: <strong>{{wed.officer}}</strong>
+                <br> signature <br><strong> <img src="static/images/officer-divorse.png" width="200" height="100"alt="officer-signature" srcset=""> </strong>
+
+                        <strong style="text-align:right;"> <img src="static/images/stamp.jpg" width="200" height="200"alt="officer-signature" srcset=""> </strong>
+                  </footer>
         {% endfor %}
     {% elif divorse %}
+        {% for divorse in divorse%}
         <h2> <center> Certificat de Divorse</center> </h2>
+        <div class="text-center">
+            <!-- Je sousigne <b>{{wed.officer}}</b>  avoir benie et unir Mr <b>{{wed.couple.groom_full_name}}</b>  a Mme <b>{{wed.couple.bride_full_name}}</b>  par le lien du mariage selon l'article
+            12 du consitution de 1980 revise en 2009, par la loi qui me sont confere je vous declare Mari et Femme en ce date du <B>{{wed.created_at}}</B>  -->
+            This certifies that,
+            <strong>{{divorse.wed.couple.bride_full_name}}</strong> & <strong>{{divorse.wed.couple.groom_full_name}}</strong>
+            <p>Ended Their marriage thought IMVU divorce </p>
+            <strong>on {{divorse.created_at}}</strong> <p>High Court of IBANDA</p>
+            <p>The ceremony was witnessed</p>
+            <div>
+                by:<strong>Witness 1: Batey Joh</strong> <br>
+                signature <br><strong> <img src="static/images/witness1.png" width="200" height="100"alt="officer-signature" srcset=""> </strong>
+            </div>
+            
+        </div>
+        <footer>
+            Magistrate: <strong>{{divorse.magistrate}}</strong>
+            <br> signature <br><strong> <img src="static/images/signature.jpeg" width="200" height="100"alt="officer-signature" srcset=""> </strong>
+
+                    <strong style="text-align:right;"> <img src="static/images/stamp.jpg" width="200" height="200"alt="officer-signature" srcset=""> </strong>
+        </footer>
+        {% endfor %}
     {% endif %}
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+<!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+-->
 </body>
 </html>

@@ -98,12 +98,12 @@
                   <div class="ui right floated small blue labeled icon button">
                     <i class="user icon"></i> Register Wedding
                   </div>
-                  <div class="ui small button">
+                  <!-- <div class="ui small button">
                     Approve
                   </div>
                   <div class="ui small  disabled button">
                     Approve All
-                  </div>
+                  </div> -->
                 </th>
               </tr>
               <tr><th colspan="5">
@@ -153,7 +153,11 @@
                         <td>{{couples.groom_dob|timesince}}/{{couples.bride_dob|timesince}}</td>
                         <td>{{couples.groom_phone}}/{{couples.bride_phone}}</td>
                         <td>{{couples.groom_mail|truncatechars:10}}/{{couples.bride_mail|truncatechars:10}}</td>
-                        <td><img class="ui avatar image" src="{{couples.groom_photo.url}}" alt="">/<img class="ui avatar image" src="{{couples.bride_photo.url}}" alt=""></td>
+                        {% if couples.groom_photo.url and couples.bride_photo.url %}
+                          <td><img class="ui avatar image" src="{{couples.groom_photo.url}}" alt="">/<img class="ui avatar image" src="{{couples.bride_photo.url}}" alt=""></td>
+                        {% else %}
+                          <td><img class="ui avatar image" src="{% static 'images/user.png'%}" alt="">/<img class="ui avatar image" src="{% static 'images/user.png'%}" alt=""></td>
+                        {% endif %}
                         <td>{{couples.groom_status}}/{{couples.bride_status}}</td>
                     </tr>  
                     {% empty %}
@@ -179,15 +183,15 @@
                   <div class="ui right floated small blue labeled icon button">
                     <i class="user icon"></i> Register  Couples
                   </div>
-                  <div class="ui small button">
+                  <!-- <div class="ui small button">
                     Approve
                   </div>
                   <div class="ui small  disabled button">
                     Approve All
-                  </div>
+                  </div> -->
                 </th>
               </tr>
-              <tr><th colspan="7">
+              <!-- <tr><th colspan="7">
                 <div class="ui right floated pagination menu">
                   <a class="icon item">
                     <i class="left chevron icon"></i>
@@ -200,7 +204,7 @@
                     <i class="right chevron icon"></i>
                   </a>
                 </div>
-              </th>
+              </th> -->
             </tr>
             </tfoot>
           </table>
@@ -215,6 +219,7 @@
                 <th>Divorse Matricule</th>
                 <th>Wedding Matricule</th>
                 <th>Sentence</th>
+                <th>Magistrate</th>
                 <th>Created Date</th>
                 <th>Certificate</th>
               </tr>
@@ -230,6 +235,7 @@
                         <td>{{divorses.divorse_matricule}}</td>
                         <td>{{divorses.wed}}</td>
                         <td>{{divorses.sentence}}</td>
+                        <td>{{divorses.magistrate}}</td>
                         <td>{{divorses.created_at}}</td>
                         <td><i class="icon red print" style="font-size: 18px;"></i>Print</td>  
                     </tr>
@@ -261,19 +267,20 @@
             <tfoot class="full-width">
               <tr>
                 <th></th>
-                <th colspan="4">
+                <th colspan="5">
                   <div class="ui right floated tiny blue labeled icon button">
                     <i class="user icon"></i> <a class="ui  blue label" href="{% url 'certification:add-divorse'%}">Register Divorse</a> 
                   </div>
-                  <div class="ui small button">
+                  <!-- <div class="ui small button">
                     Approve
                   </div>
                   <div class="ui small  disabled button">
                     Approve All
-                  </div>
+                  </div> -->
                 </th>
               </tr>
-              <tr><th colspan="4">
+              <!-- <tr>
+                <th colspan="4">
                 <div class="ui right floated pagination menu">
                   <a class="icon item">
                     <i class="left chevron icon"></i>
@@ -287,7 +294,7 @@
                   </a>
                 </div>
               </th>
-            </tr>
+            </tr> -->
             </tfoot>
           </table>
     </div>

@@ -23,3 +23,9 @@ class DivorseAdmin(admin.ModelAdmin):
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
     fields = ['services', 'price', 'transaction_number', 'transaction_name','Divorse', 'mariage' ]
+
+
+
+admin.site.site_header = 'Certification Dashboboard'
+admin.site.site_title ='Certification System'
+admin.site.index_title='Administrtor Dashboboard'

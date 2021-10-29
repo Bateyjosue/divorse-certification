@@ -15,6 +15,7 @@ from django.template.loader import get_template
 from django.core.mail import send_mail
 
 from django.contrib.auth import get_user_model
+from django.conf import settings
 
 User = get_user_model()
 # Create your views here.
@@ -174,33 +175,45 @@ class AddWedView(View):
         }
         return render(request,'add-wed.html',context)
     def post(self, request):
+        messageSent = False
         cou = Couple.objects.filter(pk = request.POST.get('couple'))
-
         wed = WedForm(request.POST)
         if wed.is_valid():
             couple = request.POST.get('couple')
-            couples = Wed.objects.filter(couple=couple)
-            if not Wed.objects.filter(couple=couple).exists():
-                # if couples.couple.groom_status == 'Divorse' and couples.bride_status == 'Divorse':
+            couples = Wed.objects.filter(couple_id = couple)
+            # WED = Wed.objects.all().get(couple=couple)
+            if not Wed.objects.filter(couple_id=couple).exists():
+                for c in Wed.objects.all().filter(couple_id = couple):
+                    send_mail(
+                        'Marriage comfirmation',
+                        c.pk + ' is your certificate matricule',
+                        settings.DEFAULT_FROM_EMAIL,
+                        ['josuebatey19@gmail.com'],
+                        fail_silently=False,
+                    )
+                messageSent = True
                 wed.save(commit=True)
-               
-                couples.couple.groom_status.update(groom_status='Married')
-                Couple.objects.filter(pk = couple).update(groom_status='Married')
+                print('Id Couple ' + couple)
+                print(cou) 
+                print(couples)
                 messages.success(request, ' Saved ')
-                send_mail(
-                    'Marriage comfirmation',
-                    request.POST.get('wed_matricule') + ' is your certificate matricule',
-                    'josuebatey19@gmail.com',
-                    [request.POST.get('wed').couple.groom_mail, 'josuebatey19@gmail.com'],
-                    fail_silently=False,
-                )
                 return HttpResponseRedirect(reverse('certification:dashboard'))
-                # else:
-                #     messages.success(request, 'Data Not Found')
-                #     return HttpResponseRedirect(reverse('certification:add-wed'))
             else:
-                messages.success(request, 'Unfinilized Divorse Process')
-                return HttpResponseRedirect(reverse('certification:add-wed'))
+                print (couple)
+                if Wed.objects.get(couple = couple).couple.groom_status and Wed.objects.get(couple = couple).couple.bride_status:
+                    wed.save(commit=True)
+                    send_mail(
+                        'Marriage comfirmation',
+                        request.POST.get('wed_matricule') + ' is your certificate matricule',
+                        'josuebatey19@gmail.com',
+                        ['josuebatey19@gmail.com'],
+                        fail_silently=False,
+                    )
+                    messages.success(request, ' Saved ')
+                    return HttpResponseRedirect(reverse('certification:dashboard'))
+                else:
+                    messages.success(request, 'Unfinilized Divorse Process')
+                    return HttpResponseRedirect(reverse('certification:add-wed'))
 
 class AddDivorseView(View):
     def get(self, request):
@@ -230,3 +243,11 @@ class AddDivorseView(View):
             messages.error(request, 'Not saved')
             return HttpResponseRedirect(reverse('certification:add-divorse'))
 
+class FindView(View):
+    def get(self, request, *args, **kwargs):
+        context = {
+
+        }
+        return render(request, 'find.html', context)
+    def post(self, request):
+        pass
