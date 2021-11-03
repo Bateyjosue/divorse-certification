@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import fields
-from .models import Couple, Wed, Divorse, Payment
+from .models import Couple, Wed, Divorse, Payment, Find
 
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -12,7 +12,13 @@ from django.contrib.auth.models import User
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name','last_name','is_active')
+        exclude = ['created_at', 'updated_at']
+
+class FindForm(forms.ModelForm):
+    class Meta:
+        model =  Find
+        exclude = ['created_at', 'updated_at']
+
 
 class CoupleForm(forms.ModelForm):
     bride_photo = forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control-photo'}), required=False)

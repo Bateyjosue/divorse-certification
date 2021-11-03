@@ -1,4 +1,21 @@
 {% extends "base.html"%}
 {% block content %}
-
+    <div class="ui centered column  grid " style="">
+        <form action="" class="ui  form" method="post" style="margin:50px !important;">
+            {% csrf_token %}
+            <div class="" style=" text-align: left !important;line-height: 35px !important;">
+                {{form}}
+            </div>
+            <p>
+                <input type="checkbox" name="agree" id="">
+                By submitting this form i agree that i've lost my certificate token and i want to get it back via my mail...
+            </p>
+            
+            <div class="field">
+                <br>
+                <button class="positive ui  fluid button">Send Request</button>
+            </div>
+            
+        </form>
+    </div>
 {% endblock %}

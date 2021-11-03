@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 from .models import *
-from .forms import CoupleForm, WedForm, DivorseForm, PaymentForm, UserForm
+from .forms import CoupleForm, WedForm, DivorseForm, PaymentForm, UserForm, FindForm
 from django.views.generic import CreateView, UpdateView
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
@@ -180,17 +180,18 @@ class AddWedView(View):
         wed = WedForm(request.POST)
         if wed.is_valid():
             couple = request.POST.get('couple')
+            wed_matricule = request.POST.get('wed_matricule')
             couples = Wed.objects.filter(couple_id = couple)
             # WED = Wed.objects.all().get(couple=couple)
             if not Wed.objects.filter(couple_id=couple).exists():
-                for c in Wed.objects.all().filter(couple_id = couple):
-                    send_mail(
-                        'Marriage comfirmation',
-                        c.pk + ' is your certificate matricule',
-                        settings.DEFAULT_FROM_EMAIL,
-                        ['josuebatey19@gmail.com'],
-                        fail_silently=False,
-                    )
+                # for c in Wed.objects.all().filter(couple_id = couple):
+                send_mail(
+                    'Marriage cofirmation',
+                    wed_matricule + ' is your certificate matricule',
+                    settings.DEFAULT_FROM_EMAIL,
+                    ['josuebatey19@gmail.com'],
+                    fail_silently=False,
+                )
                 messageSent = True
                 wed.save(commit=True)
                 print('Id Couple ' + couple)
@@ -246,8 +247,11 @@ class AddDivorseView(View):
 class FindView(View):
     def get(self, request, *args, **kwargs):
         context = {
-
+            'form' : FindForm()
         }
         return render(request, 'find.html', context)
     def post(self, request):
-        pass
+        form  = FindForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Request has been sent')

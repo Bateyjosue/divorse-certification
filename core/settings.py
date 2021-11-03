@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)z%7ch1sil17c*(*#g1o@gyg9^kw(-ou@k=q$q=(q&41_j6pup'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.1.69','127.0.0.1','online-apps.herokuapp.com']
 
@@ -191,3 +191,13 @@ EMAIL_HOST_USER = 'josuebatey19@gmail.com'
 EMAIL_HOST_PASSWORD = '9696Jael'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+# CORS_REPLACE_HTTPS_REFERER      = False
+# HOST_SCHEME                     = "http://"
+# SECURE_PROXY_SSL_HEADER         = None
+# SECURE_SSL_REDIRECT             = False
+# SESSION_COOKIE_SECURE           = False
+# CSRF_COOKIE_SECURE              = False
+# SECURE_HSTS_SECONDS             = None
+# SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
+# SECURE_FRAME_DENY               = False

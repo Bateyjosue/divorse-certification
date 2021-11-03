@@ -3,6 +3,7 @@ from django.db.models.expressions import Value
 from django.db.models.fields import DateTimeField
 
 from django.db.models.signals import pre_save
+from django.http import request
 from core.utils import *
 from django.urls import reverse
 from django_countries.fields import CountryField
@@ -53,9 +54,19 @@ class Couple(models.Model):
     updated_at = models.DateTimeField(auto_now=True)    
 
     def __str__(self):
-        return self.groom_Nat_ID + '/'+ self.bride_Nat_ID 
+        return self.groom_full_name + '/'+ self.bride_full_name 
     def get_absolute_url(self):
         return reverse('certification:dashboard')
+
+class Find(models.Model):
+    national_ID = models.CharField(max_length=50)
+    full_name  = models.CharField(max_length=50)
+    certifiate = (('Marriage','Marriage'),('Divorce', 'Divorce'))
+    requests = models.CharField(max_length=50, choices = certifiate)
+    email = models.EmailField(max_length=50) 
+
+    created_at  = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)    
 
 class Wed(models.Model):
     wed_matricule = models.CharField(max_length=50,primary_key=True, null=False, blank=True)
@@ -119,4 +130,4 @@ class Payment(models.Model):
         return self.services
 
     def get_absolute_url(self):
-        return '/dash'
+        return '/'

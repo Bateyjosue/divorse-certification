@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin.options import ModelAdmin
 
-from .models import Wed, Couple,Divorse, Payment
+from .models import Wed, Couple,Divorse, Payment, Find
 # Register your models here.
 @admin.register(Wed)
 class WedAdmin(admin.ModelAdmin):
@@ -23,6 +23,10 @@ class DivorseAdmin(admin.ModelAdmin):
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
     fields = ['services', 'price', 'transaction_number', 'transaction_name','Divorse', 'mariage' ]
+
+@admin.register(Find)
+class FindAdmin(admin.ModelAdmin):
+    list_display = ()
 
 
 
