@@ -16,6 +16,8 @@
       *, body{
        
       }
+      body{
+      }
       a{
       }
       .hidden.menu {
@@ -133,7 +135,7 @@
     ;
     </script>
 </head>
-<body>
+<body class="ui inverted " style="background: #000 !important;">
     <!-- Following Menu -->
 <div class="ui large top fixed hidden  menu">
   <div class="ui container">
@@ -158,33 +160,34 @@
 
 
 <!-- Page Contents -->
-<div class="pusher">
-  <div class="ui inverted vertical masthead center aligned segment">
+    <div class="pusher">
+        <div class="ui inverted vertical masthead center aligned segment">
+            <div class="ui  inverted container">
+                <div class="ui large secondary inverted pointing menu">
+                <a class="toc item">
+                    <i class="sidebar icon"></i>
+                </a>
+                <a href="/" class="active item">Home</a>
+                <a class="item">About</a>
+                <div class="right item">
+                    <a href="find" class="ui inverted button">Find Certificate</a>
+                    <!-- <a class="ui inverted button"></a> -->
+                </div>
+                </div>
+            </div>
 
-    <div class="ui  inverted container">
-      <div class="ui large secondary inverted pointing menu">
-        <a class="toc item">
-          <i class="sidebar icon"></i>
-        </a>
-        <a href="/" class="active item">Home</a>
-        <a class="item">About</a>
-        <div class="right item">
-          <a href="find" class="ui inverted button">Find Certificate</a>
-          <!-- <a class="ui inverted button"></a> -->
+                {%block content%}
+                {%endblock%}
+            <div class="ui fixed bottom sticky inverted vertical footer segment"
+                style="
+                padding-top:10px !important;
+                padding-bottom:10px !important;width: 100%;
+                ">
+                <div class="ui container">
+                Final Year Project&copy;2021
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-    {%block content%}
-    {%endblock%}
-    <div class="ui fixed bottom sticky inverted vertical footer segment"
-      style="
-        padding-top:10px !important;
-        padding-bottom:10px !important;width: 100%;
-      "
-    >
-      <div class="ui container">
-        Final Year Project&copy;2021
-      </div>
-  </div>
 </body>
 </html>
