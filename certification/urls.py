@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import searchCertificate, FindView, UpdateUserView, IndexView, DashboardView, AddCoupleView, PaymentView, AddWedView, AddDivorseView, SearchDocumentView, CertificateView
+from .views import searchCertificate, FindView, UpdateUserView, IndexView, DashboardView, AddCoupleView, PaymentView, AddWedView, AddDivorseView, SearchDocumentView, CertificateView, updateStatus
 
 app_name = 'certification'
 urlpatterns=[
@@ -13,4 +13,5 @@ urlpatterns=[
     path('add-divorse', AddDivorseView.as_view(), name='add-divorse'),
     path('profile/<pk>', UpdateUserView.as_view(), name='profile'),
     path('find', FindView.as_view(), name='find'),
+    path('certificate/success', updateStatus, name='updatestatus')
 ]

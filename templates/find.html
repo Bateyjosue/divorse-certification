@@ -1,5 +1,24 @@
 {% extends "base.html"%}
 {% block content %}
+    <div class="ui basic modal" id="modal">
+        <div class="ui icon header">
+        <i class="archive icon"></i>
+        Archive Old Messages
+        </div>
+        <div class="content">
+        <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
+        </div>
+        <div class="actions">
+        <div class="ui red basic cancel inverted button">
+            <i class="remove icon"></i>
+            No
+        </div>
+        <div class="ui green ok inverted button">
+            <i class="checkmark icon"></i>
+            Yes
+        </div>
+        </div>
+    </div>
     <div class="ui centered column  grid " style="">
         <form action="" class="ui  form" method="post" style="margin:50px !important;">
             {% csrf_token %}
@@ -13,9 +32,17 @@
             
             <div class="field">
                 <br>
-                <button class="positive ui  fluid button">Send Request</button>
+                <button class="positive ui  fluid button" id="btn">Send Request</button>
             </div>
-            
         </form>
+        <button id="btn-1"> click me</button>
     </div>
+    <script>
+        const model = document.getElementById("modal");
+        const btn = document.getElementById("btn-1");
+        btn.addEventListener("click", ()=>{
+            model.modal('show');
+        })
+
+    </script>
 {% endblock %}

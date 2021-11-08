@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import fields
-from .models import Couple, Wed, Divorse, Payment, Find
+from .models import Couple, Wed, Divorse, Find
 
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -37,7 +37,7 @@ class DivorseForm(forms.ModelForm):
         model = Divorse
         exclude = ['created_at', 'updated_at']
 
-class PaymentForm(forms.ModelForm):
+"""class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
-        exclude = ['transaction_date', 'is_done']
+        exclude = ['transaction_date', 'is_done']"""

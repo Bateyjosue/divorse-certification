@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard</title>
+        <title>Payment Gateway</title>
             <link rel="stylesheet" href="{% static 'css/style.css'%}">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
         <script
@@ -15,28 +15,88 @@
         </script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
     </head>
-    <body>
-        <main class="ui container">
-            <form action="" method="post" class="ui form" style="margin-top:30px; line-height: 30px;">
-                {% csrf_token %}
-                <div class="ui  two column grid" >
-                    <div class="ui eight centered wide column ">
-                        <h3>Payment Information</h3>
-                        {{form}}
-                        <br>
-                        <div>
-                            <input class="ui small  fluid  button blue" type="submit" value="Submit">
-                        </div>
-                    </div>
-               </div>
-            </form>
-            {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+    <body style="overflow:auto">
+        <main style="width: 400px; height:300px;margin:auto;background: rgb(243, 239, 239);margin-top:150px;
+            padding: 30px 10px;
+        ">
+            <div>
+                <form action="" method="POST">
+                    <input type="hidden" name="weds" id="" value="{{pk}}">
+                </form>
+                <p id="id">{{pk}}</p>
+            </div>
+            <div id="paypal-button-container"></div>
         </main>
+        <script src="https://www.paypal.com/sdk/js?client-id=AVf1mIbS2h14f-VD7LUUPNxrOo0ZWzGtYIfwvp736dwDJwGLMSmQzxfPBIbRsjnl3cW0-jrXsiHqigx6&currency=USD"></script>
+        <script>
+            function getToken(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getToken('csrftoken');
+            // Render the PayPal button into #paypal-button-container
+            const wed_status = true;
+            const id = document.querySelector('#id');
+            function successOrder(){
+					
+
+                url = '{% url "certification:updatestatus" %}';
+                
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-type':'application/json',
+                        'X-CSRFToken' : csrftoken,
+                    },
+                    body:JSON.stringify({
+                        'status' : wed_status,
+                        'id' : id,
+                      
+                    })
+                })
+            }
+            paypal.Buttons({
+
+                // Set up the transaction
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: '10.00'
+                            }
+                        }]
+                    });
+                },
+    
+                // Finalize the transaction
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(orderData) {
+                        // Successful capture! For demo purposes:
+                        console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                        var transaction = orderData.purchase_units[0].payments.captures[0];
+                        alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+                        
+                        successOrder()
+                        // Replace the above to show a success message within this page, e.g.
+                         const element = document.getElementById('paypal-button-container');
+                         element.innerHTML = '';
+                         element.innerHTML = '<h3>Thank you for your payment</h3>';
+                        actions.redirect('thank_you.html');
+                    });
+                }
+            }).render('#paypal-button-container');
+        </script>
     </body>
 </html>

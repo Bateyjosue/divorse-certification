@@ -3,11 +3,13 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 from .models import *
-from .forms import CoupleForm, WedForm, DivorseForm, PaymentForm, UserForm, FindForm
+from .forms import CoupleForm, WedForm, DivorseForm, UserForm, FindForm
 from django.views.generic import CreateView, UpdateView
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse, reverse_lazy
+import json
+from django.http import JsonResponse
 
 from xhtml2pdf import pisa 
 from django.template.loader import get_template
@@ -16,6 +18,8 @@ from django.core.mail import send_mail
 
 from django.contrib.auth import get_user_model
 from django.conf import settings
+
+from .filters import WedFilter, CoupleFilter, DivorseFilter
 
 User = get_user_model()
 # Create your views here.
@@ -44,10 +48,7 @@ def searchCertificate(request):
 
 class CertificateView(View):
     def get(self, request, pk):
-        if Payment.objects.filter(Divorse = pk).exists() or Payment.objects.filter(mariage = pk).exists():
-            d= Payment.objects.filter(Divorse = pk)
-            m = Payment.objects.filter(mariage = pk)
-            # if d.is_done or m.is_done:
+        if Divorse.objects.filter(payment = True) or Wed.objects.filter(payment = True):
             template_path = 'certificate.html'
             wed = Wed.objects.filter(wed_matricule = pk)
             divorse = Divorse.objects.filter(divorse_matricule = pk)
@@ -66,29 +67,65 @@ class CertificateView(View):
             if pisa_status.err:
                 return HttpResponse('We had some errors <pre>' + html + '</pre>')
             return response
-        return redirect('certificates/payment')
-class PaymentView(CreateView):
-    model = Payment
-    form_class = PaymentForm
-    template_name = 'payment.html'
-    sucess_message = 'Added'
-    error_message = 'Error :: Not saved'
-    # redirect('dashboard')
+        context = {
+            'pk' : pk,
+        }    
+        return render(request, 'payment.html', context)
+    
+
+class PaymentView(View):
+    def get(self, request):
+        return render(request, 'payment.html')
+    
+    
+    # redirect('dashboard')""
+
+
+def updateStatus(request):
+
+    data = json.loads(request.body)
+    certId = data['id']
+    status = data['status']
+    if Wed.objects.get(pk = certId).exists():
+        Wed.objects.filter(pk=certId).update(payment=True)
+    else:
+        Divorse.objects.filter(pk=certId).update(payment=True)
+    return JsonResponse('Certificate id update', safe=False)
 
 class DashboardView(View):
     def get(self, request):
         if request.user.is_authenticated:
+            wed = Wed.objects.all()
             context = {
                 'couple': Couple.objects.all(),
-                'wed': Wed.objects.all(),
+                'wed': wed,
+                # 'wed_search' : weds,
+                'wed_filter' : WedFilter(),
                 'divorse': Divorse.objects.all(),
                 'couple_count':Couple.objects.all().count(),
                 'wed_count':Wed.objects.all().count(),
                 'divorse_count':Divorse.objects.all().count(),
+                'user_count':User.objects.all().count(),
             }
             return render(request,'dashboard.html', context)
         else:
             return redirect('account_login')
+    # def post(self, request):
+    #     pass
+        # if request.user.is_authenticated:
+        #     context = {
+        #         'couple': Couple.objects.all(),
+        #         'wed': Wed.objects.all(),
+               
+        #         'divorse': Divorse.objects.all(),
+        #         'couple_count':Couple.objects.all().count(),
+        #         'wed_count':Wed.objects.all().count(),
+        #         'divorse_count':Divorse.objects.all().count(),
+        #         'user_count':User.objects.all().count(),
+        #     }
+        #     return render(request,'dashboard.html', context)
+        # else:
+        #     return redirect('account_login')
 
 # class AddCoupleView(View):
 #     def get(self, request):
@@ -255,3 +292,7 @@ class FindView(View):
         if form.is_valid():
             form.save()
             messages.success(request, 'Request has been sent')
+            return HttpResponseRedirect('/')
+        else:
+            messages.error(request, 'Request has not been sent')
+            return HttpResponseRedirect('./')

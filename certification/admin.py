@@ -1,12 +1,12 @@
 from django.contrib import admin
 from django.contrib.admin.options import ModelAdmin
 
-from .models import Wed, Couple,Divorse, Payment, Find
+from .models import Wed, Couple,Divorse, Find
 # Register your models here.
 @admin.register(Wed)
 class WedAdmin(admin.ModelAdmin):
     fields =[]
-    list_display = ('pk', 'couple','term', 'place', 'officer', 'is_divorsed')
+    list_display = ('pk', 'couple','term', 'place', 'officer', 'is_divorsed', 'payment')
 
 
 @admin.register(Couple)
@@ -18,15 +18,16 @@ class CoupleAdmin(admin.ModelAdmin):
 
 @admin.register(Divorse)
 class DivorseAdmin(admin.ModelAdmin):
-    fields =['divorse_matricule', 'wed','sentence']
+    fields =['divorse_matricule', 'wed','sentence', 'payment']
     list_display = ('pk','divorse_matricule', 'wed','sentence', 'created_at', 'updated_at')
-@admin.register(Payment)
+"""@admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    fields = ['services', 'price', 'transaction_number', 'transaction_name','Divorse', 'mariage' ]
-
+    fields = ['services', 'price', 'Divorse', 'mariage','is_done' ]
+    list_display = ('services', 'price', 'Divorse', 'mariage','is_done')
+"""
 @admin.register(Find)
 class FindAdmin(admin.ModelAdmin):
-    list_display = ()
+    list_display = ('national_ID', 'full_name', 'email')
 
 
 

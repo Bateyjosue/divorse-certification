@@ -27,7 +27,7 @@
             </div>
             <div class="statistic">
               <div class="value">
-                <i class="plane icon"></i> {{divorse_count}}
+                <i class="heart icon pink" ></i> {{divorse_count}}
               </div>
               <div class="label">
                 Divorse
@@ -36,7 +36,7 @@
             <div class="statistic">
               <div class="value">
                 <img src="/images/avatar/small/joe.jpg" class="ui circular inline image">
-                42
+                {{user_count}}
               </div>
               <div class="label">
                 Team Members
@@ -49,6 +49,22 @@
         <h3>
             Weddings Data:
         </h3>
+        <div class="ui loading search">
+          <form action="" method="GET" class="ui form">
+              <!-- {% csrf_token %} -->
+            <div class="two fields">
+              <div class="ten wide field">
+                {{wed_filter.form}}
+              </div>
+              <div class="six wide field">
+                    <input type="submit" value="Search" class="ui button primary" style="margin-top:23px !important">
+              </div>
+              <!-- <input class="prompt" type="search" name="search-wed" placeholder="Search Wedding">
+              <i class="search icon"></i> -->
+            </div>
+          </form>
+          <div class="results"></div>
+        </div>
         <table class="ui compact celled definition table">
             <thead>
               <tr>
@@ -56,6 +72,7 @@
                 <th>Couple</th>
                 <th>Divorsed</th>
                 <th>Registered</th>
+                <th>Payment</th>
                 <th>Reports</th>
               </tr>
             </thead>
@@ -67,13 +84,24 @@
                             <input type="checkbox"> <label></label>
                         </div>
                         </td> -->
-                        <td>{{weds.wed_matricule}}</td>
-                        <td>{{weds.couple}}</td>
-                        <td>{{weds.is_divorsed}}</td>   
-                        <td>{{weds.created_at}}</td> 
-                        <td>
-                          <a href="certificate/{{weds.wed_matricule}}"><i class="icon red print" style="font-size: 18px;"></i>Print</a> 
-                        </td>              
+                        <!-- {% if wed %} -->
+                            <td>{{weds.wed_matricule}}</td>
+                            <td>{{weds.couple}}</td>
+                            <td>{{weds.is_divorsed}}</td>   
+                            <td>{{weds.created_at}}</td> 
+                            <td>{{weds.payment}}</td>  
+                            <td>
+                                <a href="certificate/{{weds.wed_matricule}}"><i class="icon red print" style="font-size: 18px;"></i>Print</a> 
+                            </td>
+                        <!-- {%elif wed_search %}
+                            <td>{{wed_search.wed_matricule}}</td>
+                            <td>{{wed_search.couple}}</td>
+                            <td>{{wed_search.is_divorsed}}</td>   
+                            <td>{{wed_search.created_at}}</td>
+                            <td>
+                                <a href="certificate/{{wed_search.wed_matricule}}"><i class="icon red print" style="font-size: 18px;"></i>Print</a> 
+                            </td>
+                        {% endif %}  -->
                     </tr>    
                     {% empty %}
                     <tr>
@@ -124,10 +152,18 @@
             </tfoot>
           </table>
     </div>
+    <div class="ui divider"></div>
     <div class="table-Couple">
         <h3>
             Couple Data:
         </h3>
+        <div class="ui loading search">
+          <div class="ui icon input">
+            <input class="prompt" type="text" placeholder="Search Couple">
+            <i class="search icon"></i>
+          </div>
+          <div class="results"></div>
+        </div>
         <table class="ui compact celled definition table">
             <thead>
               <tr>
@@ -209,14 +245,22 @@
             </tfoot>
           </table>
     </div>
+    <div class="ui divider"></div>
     <div class="table-divorse">
         <h3>
-            Divorse Data:
+            Divorce Data:
         </h3>
+        <div class="ui loading search">
+          <div class="ui icon input">
+            <input class="prompt" type="text" placeholder="Search Divorce">
+            <i class="search icon"></i>
+          </div>
+          <div class="results"></div>
+        </div>
         <table class="ui compact celled definition table">
             <thead>
               <tr>
-                <th>Divorse Matricule</th>
+                <th>Divorce Matricule</th>
                 <th>Wedding Matricule</th>
                 <th>Sentence</th>
                 <th>Magistrate</th>

@@ -67,6 +67,8 @@ class Find(models.Model):
 
     created_at  = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)    
+    def __str__(self):
+        return self.full_name
 
 class Wed(models.Model):
     wed_matricule = models.CharField(max_length=50,primary_key=True, null=False, blank=True)
@@ -75,6 +77,7 @@ class Wed(models.Model):
     place = models.CharField(max_length=200,help_text="DRC/KINSHASA/GOMBE")
     officer = models.CharField(max_length=200,help_text="Officer full-name")
     is_divorsed = models.BooleanField(default=False)
+    payment = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -100,6 +103,7 @@ class Divorse(models.Model):
     signature = models.ImageField(upload_to='signature/', default="static/images/signature.jpeg")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    payment = models.BooleanField(default=False)
 
     def __str__(self):
         return self.divorse_matricule
@@ -112,15 +116,13 @@ def pre_save_divorse_matricule(sender, instance, *args, **kwargs):
 
 pre_save.connect(pre_save_divorse_matricule, sender=Divorse)
 
-class Payment(models.Model):
+"""class Payment(models.Model):
     ser = (
         ('Divorse', 'Divorse'),
         ('Marriage', 'Marriage')
     )
     services = models.CharField(max_length=50,choices =ser, help_text="Marriage costs 10$ & Divorse costs 5$")
-    price = models.IntegerField(default=0)
-    transaction_number = models.CharField(max_length=50)
-    transaction_name = models.CharField(max_length=50)
+    price = models.IntegerField(default=10)
     transaction_date = models.DateTimeField(auto_now_add=True)
     Divorse = models.ForeignKey(Divorse, on_delete=models.CASCADE, null=True, blank=True)
     mariage = models.ForeignKey(Wed, on_delete=models.CASCADE, null=True, blank=True)
@@ -131,3 +133,4 @@ class Payment(models.Model):
 
     def get_absolute_url(self):
         return '/'
+"""

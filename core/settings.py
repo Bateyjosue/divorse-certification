@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     'certification',
     # Crispy
     'crispy_forms',
+
+    #filter Django
+    'django_filters',
 ]
 SITE_ID = 1
 
@@ -114,10 +117,10 @@ DATABASES = {
     # },
      'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'bcvc2oificlal8fokdco',
-        'USER': 'uw7fjhyfqj3jnszj',
-        'PASSWORD': 'TcWxg2G79Eb91gRpHNYw',
-        'HOST': 'bcvc2oificlal8fokdco-mysql.services.clever-cloud.com',   # Or an IP Address that your DB is hosted on
+        'NAME': 'db_certification',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
         'OPTIONS' :{
             # 'init_command':"SET sql_mode = ' STRICT_TRANS_TABLES'"
