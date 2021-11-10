@@ -10,6 +10,14 @@
                 {% endfor %}
             </ul>
         {% endif %}
+        {% if messageSent %}
+            <div>
+                <h3>
+                    <strong> Email Sucessfully Sent</strong>
+                    <p>Your message was sent successfully sent to {{forn.cleaned_data.to}}</p>
+                </h3>
+            </div>
+        {% endif %}
         <form class="ui form" action="" method="post" style="margin-bottom:110px;">
            {% csrf_token %}
            <div class="ui   column grid" >
@@ -24,12 +32,5 @@
            </div>
        </form>
     </div>
-    {% if messageSent %}
-        <div>
-            <h3>
-                <strong> Email Sucessfully Sent</strong>
-                <p>Your message was sent successfully sent to {{forn.cleaned_data.to}}</p>
-            </h3>
-        </div>
-    {% endif %}
+    
 {% endblock %}

@@ -74,10 +74,10 @@ class Wed(models.Model):
     wed_matricule = models.CharField(max_length=50,primary_key=True, null=False, blank=True)
     couple = models.ForeignKey(Couple, on_delete=models.CASCADE)
     term =  models.CharField(max_length=200)
-    place = models.CharField(max_length=200,help_text="DRC/KINSHASA/GOMBE")
-    officer = models.CharField(max_length=200,help_text="Officer full-name")
+    place = models.CharField(max_length=200)
+    officer = models.CharField(max_length=200,verbose_name="Officer full-name")
     is_divorsed = models.BooleanField(default=False)
-    payment = models.BooleanField(default=False)
+    payment = models.BooleanField(default=False, verbose_name="Is-Paid")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -91,30 +91,28 @@ class Wed(models.Model):
 def pre_save_wed_matricule(sender, instance, *args, **kwargs):
     if not instance.wed_matricule:
         instance.wed_matricule =unique_wed_matricule(instance)
-
 pre_save.connect(pre_save_wed_matricule, sender=Wed)
 
 
 class Divorse(models.Model):
-    divorse_matricule =models.CharField(max_length=50,primary_key=True)
+    divorse_matricule =models.CharField(max_length=50,primary_key=True, null=False, blank=True)
     wed = models.OneToOneField(Wed, on_delete=models.CASCADE, unique=True)
     sentence = models.BooleanField(default=False)
     magistrate = models.CharField(max_length=50, default="John Kayumbi")
     signature = models.ImageField(upload_to='signature/', default="static/images/signature.jpeg")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    payment = models.BooleanField(default=False)
+    payment = models.BooleanField(default=False, verbose_name="Is-Paid")
 
     def __str__(self):
         return self.divorse_matricule
 
-    def get_Divorse_matricule(self):
-        pass
-def pre_save_divorse_matricule(sender, instance, *args, **kwargs):
+def pre_divorse(sender, instance, *args, **kwargs):
     if not instance.divorse_matricule:
         instance.divorse_matricule =unique_divorse_matricule(instance)
 
-pre_save.connect(pre_save_divorse_matricule, sender=Divorse)
+pre_save.connect(pre_divorse, sender=Divorse)
+
 
 """class Payment(models.Model):
     ser = (

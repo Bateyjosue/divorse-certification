@@ -33,12 +33,8 @@ class SearchDocumentView(View):
 def searchCertificate(request):
     if request.method == 'GET':
         cert = request.GET.get('certificates-category')
-        # if  CERTIFICATE == 'Weddings':
         search = Wed.objects.filter(wed_matricule = request.GET.get('search'))
-        # search_divorse = None
-        # elif  CERTIFICATE == 'Divorse':
         search_divorse = Divorse.objects.filter(divorse_matricule = request.GET.get('search')) 
-        # search = None
         context ={
             'wed' : search,
             'divorse': search_divorse,
@@ -46,43 +42,75 @@ def searchCertificate(request):
         }
         return render(request,'search-doc.html', context)
 
+class RenderCertificate(View):
+    def get(self, request, pk):
+        template_path = 'certificate.html'
+        wed = Wed.objects.filter(wed_matricule = pk)
+        divorse = Divorse.objects.filter(divorse_matricule = pk)
+        context = {
+            'wed': wed,
+            'divorse': divorse
+        }
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'filename='+pk+'.pdf'
+
+        template = get_template(template_path)
+        html = template.render(context)
+
+        pisa_status = pisa.CreatePDF(html, dest=response )
+
+        if pisa_status.err:
+            return HttpResponse('We had some errors <pre>' + html + '</pre>')
+        return response
 class CertificateView(View):
     def get(self, request, pk):
-        if Divorse.objects.filter(payment = True) or Wed.objects.filter(payment = True):
-            template_path = 'certificate.html'
-            wed = Wed.objects.filter(wed_matricule = pk)
-            divorse = Divorse.objects.filter(divorse_matricule = pk)
-            context = {
-                'wed': wed,
-                'divorse': divorse
-            }
-            response = HttpResponse(content_type='application/pdf')
-            response['Content-Disposition'] = 'filename='+pk+'.pdf'
+        if Divorse.objects.filter(pk = pk).exists():
+            if Divorse.objects.filter(pk =pk, payment = True):
+                template_path = 'certificate.html'
+                divorse = Divorse.objects.filter(divorse_matricule = pk)
+                context = {
+                    'divorse' : divorse,
+                } 
+                response = HttpResponse(content_type='application/pdf')
+                response['Content-Disposition'] = 'filename='+pk+'.pdf'
+                template = get_template(template_path)
+                html = template.render(context)
+                pisa_status = pisa.CreatePDF(html, dest=response )
 
-            template = get_template(template_path)
-            html = template.render(context)
-
-            pisa_status = pisa.CreatePDF(html, dest=response )
-
-            if pisa_status.err:
-                return HttpResponse('We had some errors <pre>' + html + '</pre>')
-            return response
-        context = {
-            'pk' : pk,
-        }    
-        return render(request, 'payment.html', context)
-    
+                if pisa_status.err:
+                    return HttpResponse('We had some errors <pre>' + html + '</pre>')
+                return response
+            else:
+                context = {
+                    'pk' : pk,
+                }
+                return render(request, 'payment.html', context)
+        elif Wed.objects.filter(pk = pk).exists():
+            if Wed.objects.filter(pk = pk, payment = True):
+                template_path = 'certificate.html'
+                wed = Wed.objects.filter(wed_matricule = pk)
+                context = {
+                    'wed' : wed,
+                } 
+                response = HttpResponse(content_type='application/pdf')
+                response['Content-Disposition'] = 'filename='+pk+'.pdf'
+                template = get_template(template_path)
+                html = template.render(context)
+                pisa_status = pisa.CreatePDF(html, dest=response )
+                if pisa_status.err:
+                    return HttpResponse('We had some errors <pre>' + html + '</pre>')
+                return response
+            else:
+                context = {
+                    'pk' : pk,
+                }
+                return render(request, 'payment.html', context)
 
 class PaymentView(View):
     def get(self, request):
         return render(request, 'payment.html')
     
-    
-    # redirect('dashboard')""
-
-
 def updateStatus(request):
-
     data = json.loads(request.body)
     certId = data['id']
     status = data['status']
@@ -91,7 +119,6 @@ def updateStatus(request):
     else:
         Divorse.objects.filter(pk=certId).update(payment=True)
     return JsonResponse('Certificate id update', safe=False)
-
 class DashboardView(View):
     def get(self, request):
         if request.user.is_authenticated:
@@ -99,8 +126,7 @@ class DashboardView(View):
             context = {
                 'couple': Couple.objects.all(),
                 'wed': wed,
-                # 'wed_search' : weds,
-                'wed_filter' : WedFilter(),
+                'wed_filter' : WedFilter(request.GET, Wed.objects.all()),
                 'divorse': Divorse.objects.all(),
                 'couple_count':Couple.objects.all().count(),
                 'wed_count':Wed.objects.all().count(),
@@ -110,47 +136,6 @@ class DashboardView(View):
             return render(request,'dashboard.html', context)
         else:
             return redirect('account_login')
-    # def post(self, request):
-    #     pass
-        # if request.user.is_authenticated:
-        #     context = {
-        #         'couple': Couple.objects.all(),
-        #         'wed': Wed.objects.all(),
-               
-        #         'divorse': Divorse.objects.all(),
-        #         'couple_count':Couple.objects.all().count(),
-        #         'wed_count':Wed.objects.all().count(),
-        #         'divorse_count':Divorse.objects.all().count(),
-        #         'user_count':User.objects.all().count(),
-        #     }
-        #     return render(request,'dashboard.html', context)
-        # else:
-        #     return redirect('account_login')
-
-# class AddCoupleView(View):
-#     def get(self, request):
-#         context = {
-#             'couple': CoupleForm(),
-#         }
-#         return render(request,'add-couple.html', context)
-
-#     def post(self, request):
-#         couple = CoupleForm(request.POST)
-#         # bride = CoupleForm(request.POST)
-#         if  couple.is_valid():
-#             couple.save(commit=True)
-#             messages.success(request, 'Data saved successfully')
-#             # if bride.is_valid():
-#             #     bride.save(commit=True)
-#             #     messages.success(request, 'Data saved successfully [bride]')
-#             # else:
-#             #     messages.success(request, 'Check Information provided in Bride')
-#             #     return HttpResponseRedirect(reverse('certification:add-couple'))
-#             return HttpResponseRedirect(reverse('certification:dash'))
-#         else:
-#             messages.success(request, 'Check Information provided')
-#             return HttpResponseRedirect(reverse('certification:add-couple'))
-
 class AddCoupleView(CreateView):
     model = Couple
     form_class = CoupleForm
@@ -165,46 +150,6 @@ class UpdateUserView(SuccessMessageMixin, UpdateView):
     template_name = 'profil.html'
     success_message = 'Updated'
     success_url = reverse_lazy('certification:dashboard')
-    # def get(self, request, pk):
-    #     context = {
-    #             'form': UserForm(request.GET, instance = request.user)
-    #         }
-    #     return render(request, 'profil.html', context)
-    # def POST(self, request, pk):
-    #     form_class = UserForm(request.POST, instance = request.user)
-    #     if form_class.is_valid():
-    #         form_class.save()
-    #         messages.success(request, ' Successfully')
-    #         return redirect(to = 'dashboard')
-    #     else:
-    #         messages.success(request, ' Not Save')
-    #         return redirect(to = 'profile')
-        # template_name = 'profil.html'
-        # return HttpResponseRedirect(reverse('dashboard'))
-
-#     def get(self, request):
-#         context = {
-#             'couple': CoupleForm(),
-#         }
-#         return render(request,'add-couple.html', context)
-
-#     def post(self, request):
-#         couple = CoupleForm(request.POST)
-#         # bride = CoupleForm(request.POST)
-#         if  couple.is_valid():
-#             couple.save(commit=True)
-#             messages.success(request, 'Data saved successfully')
-#             # if bride.is_valid():
-#             #     bride.save(commit=True)
-#             #     messages.success(request, 'Data saved successfully [bride]')
-#             # else:
-#             #     messages.success(request, 'Check Information provided in Bride')
-#             #     return HttpResponseRedirect(reverse('certification:add-couple'))
-#             return HttpResponseRedirect(reverse('certification:dash'))
-#         else:
-#             messages.success(request, 'Check Information provided')
-#             return HttpResponseR
-
 class AddWedView(View):
     def get(self, request):
         context ={
@@ -219,29 +164,27 @@ class AddWedView(View):
             couple = request.POST.get('couple')
             wed_matricule = request.POST.get('wed_matricule')
             couples = Wed.objects.filter(couple_id = couple)
-            # WED = Wed.objects.all().get(couple=couple)
             if not Wed.objects.filter(couple_id=couple).exists():
-                # for c in Wed.objects.all().filter(couple_id = couple):
+                wed.save(commit=True)
                 send_mail(
-                    'Marriage cofirmation',
-                    wed_matricule + ' is your certificate matricule',
+                    'Marriage confirmation',
+                    str(Wed.objects.get(couple_id=couple)) + ' is your certificate matricule',
                     settings.DEFAULT_FROM_EMAIL,
                     ['josuebatey19@gmail.com'],
                     fail_silently=False,
                 )
                 messageSent = True
-                wed.save(commit=True)
                 print('Id Couple ' + couple)
                 print(cou) 
                 print(couples)
                 messages.success(request, ' Saved ')
-                return HttpResponseRedirect(reverse('certification:dashboard'))
+                return HttpResponseRedirect(reverse('certification:add-wed'))
             else:
                 print (couple)
                 if Wed.objects.get(couple = couple).couple.groom_status and Wed.objects.get(couple = couple).couple.bride_status:
                     wed.save(commit=True)
                     send_mail(
-                        'Marriage comfirmation',
+                        'Marriage confirmation',
                         request.POST.get('wed_matricule') + ' is your certificate matricule',
                         'josuebatey19@gmail.com',
                         ['josuebatey19@gmail.com'],
@@ -252,7 +195,6 @@ class AddWedView(View):
                 else:
                     messages.success(request, 'Unfinilized Divorse Process')
                     return HttpResponseRedirect(reverse('certification:add-wed'))
-
 class AddDivorseView(View):
     def get(self, request):
         context ={
@@ -263,12 +205,19 @@ class AddDivorseView(View):
         divorse = DivorseForm(request.POST)
         if divorse.is_valid():
             divorse.save(commit=True)
+            
             weds = request.POST.get('wed')
+            send_mail(
+                'Divorse Certificate confirmation',
+                str(Divorse.objects.get(wed=weds)) + ' is your certificate matricule',
+                settings.DEFAULT_FROM_EMAIL,
+                ['josuebatey19@gmail.com'],
+                fail_silently=False,
+            )
             couple = request.POST.get('couple')
             if Wed.objects.filter(wed_matricule = weds).exists():
                 Wed.objects.filter(wed_matricule = weds).update(is_divorsed= True)
                 Couple.objects.filter(pk = couple).update(bride_status= True, groom_status= True)
-                # Wed.objects.filter(wed_matricule = weds).update(weds.)
                 messages.success(request, 'Saved')
                 return HttpResponseRedirect(reverse('certification:dashboard'))
         else:

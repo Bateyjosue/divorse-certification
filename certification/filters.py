@@ -5,7 +5,7 @@ class WedFilter(django_filters.FilterSet):
     wed_matricule = django_filters.CharFilter(lookup_expr='iexact')
     class Meta:
         model = Wed
-        fields = ['wed_matricule',]
+        fields = ['wed_matricule', 'couple']
 
 class CoupleFilter(django_filters.FilterSet):
     class Meta:
