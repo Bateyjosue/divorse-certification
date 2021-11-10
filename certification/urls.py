@@ -1,4 +1,6 @@
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 from .views import RenderCertificate, searchCertificate, FindView, UpdateUserView, IndexView, DashboardView, AddCoupleView, PaymentView, AddWedView, AddDivorseView, SearchDocumentView, CertificateView, updateStatus
 
 app_name = 'certification'
@@ -15,4 +17,4 @@ urlpatterns=[
     path('profile/<pk>', UpdateUserView.as_view(), name='profile'),
     path('find', FindView.as_view(), name='find'),
     path('certificate/success', updateStatus, name='updatestatus')
-]
+]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

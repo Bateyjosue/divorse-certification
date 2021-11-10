@@ -10,6 +10,11 @@
             {% endfor %}
         </ul>
     {% endif %}
+    <div>
+        <a href="{% url 'account_change_password' %}">
+            <i class="ui edit icon"></i>Change Password
+        </a>
+    </div>
     <form class="ui form" action="" method="post" style="margin-bottom:110px;">
        {% csrf_token %}
        <div class="ui   column grid" >

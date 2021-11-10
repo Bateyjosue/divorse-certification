@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        exclude = ['created_at', 'updated_at']
+        exclude = ['user_permissions','password','last_login','groups','created_at', 'updated_at']
 
 class FindForm(forms.ModelForm):
     class Meta:

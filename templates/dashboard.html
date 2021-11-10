@@ -2,11 +2,7 @@
 {% load static %}
 {% block content %}
 <style>
-    .row #side{
-
-    }
 </style>
-   
     <div class="stat ui container"> 
         <div class="ui statistics ">
             <div class="statistic">
@@ -50,16 +46,17 @@
             Weddings Data:
         </h3>
         <div class="ui loading search">
-          <form action="" method="GET" class="ui form">
+          <form action="" method="GET" class="ui form" >
             <div class="two fields">
-              <div class="two fields">
-                <div class="ten wide field">
+                <div class="sixteen wide field" style="display: flex !important; 
+                margin:0px 10px; align-items: center !important;
+                align-content: space-between !important; ;
+                " >
                   {{wed_filter.form}}
                 </div>
-              </div>
-              <div class="six wide field">
-                    <input type="submit" value="Search" class="ui button primary" style="margin-top:23px !important">
-              </div>
+                <div class="five small field">
+                    <input type="submit" value="Search" class="ui button primary" style="">
+                </div>
             </div>
           </form>
           <div class="results"></div>
@@ -78,12 +75,6 @@
             <tbody>
                 {% for weds in wed_filter.qs %}
                     <tr>
-                        <!-- <td class="collapsing">
-                        <div class="ui fitted slider checkbox">
-                            <input type="checkbox"> <label></label>
-                        </div>
-                        </td> -->
-                        <!-- {% if wed %} -->
                             <td>{{weds.wed_matricule}}</td>
                             <td>{{weds.couple}}</td>
                             <td>{{weds.is_divorsed}}</td>   
@@ -92,15 +83,6 @@
                             <td>
                                 <a href="dash/certificate/{{weds.wed_matricule}}"><i class="icon red print" style="font-size: 18px;"></i>Print</a> 
                             </td>
-                        <!-- {%elif wed_search %}
-                            <td>{{wed_search.wed_matricule}}</td>
-                            <td>{{wed_search.couple}}</td>
-                            <td>{{wed_search.is_divorsed}}</td>   
-                            <td>{{wed_search.created_at}}</td>
-                            <td>
-                                <a href="certificate/{{wed_search.wed_matricule}}"><i class="icon red print" style="font-size: 18px;"></i>Print</a> 
-                            </td>
-                        {% endif %}  -->
                     </tr>    
                     {% empty %}
                     <tr>
@@ -125,12 +107,6 @@
                   <div class="ui right floated small blue labeled icon button">
                     <i class="user icon"></i> Register Wedding
                   </div>
-                  <!-- <div class="ui small button">
-                    Approve
-                  </div>
-                  <div class="ui small  disabled button">
-                    Approve All
-                  </div> -->
                 </th>
               </tr>
               <tr><th colspan="5">
@@ -189,9 +165,9 @@
                         <td>{{couples.groom_phone}}/{{couples.bride_phone}}</td>
                         <td>{{couples.groom_mail|truncatechars:10}}/{{couples.bride_mail|truncatechars:10}}</td>
                         {% if couples.groom_photo.url and couples.bride_photo.url %}
-                          <td><img class="ui avatar image" src="{{couples.groom_photo.url}}" alt="">/<img class="ui avatar image" src="{{couples.bride_photo.url}}" alt=""></td>
+                            <td><img class="ui avatar image" src="{{couples.groom_photo.url}}" alt="">/<img class="ui avatar image" src="{{couples.bride_photo.url}}" alt=""></td>
                         {% else %}
-                          <td><img class="ui avatar image" src="{% static 'images/user.png'%}" alt="">/<img class="ui avatar image" src="{% static 'images/user.png'%}" alt=""></td>
+                            <td><img class="ui avatar image" src="{% static 'images/user.png'%}" alt="">/<img class="ui avatar image" src="{% static 'images/user.png'%}" alt=""></td>
                         {% endif %}
                         <td>{{couples.groom_status}}/{{couples.bride_status}}</td>
                     </tr>  
@@ -201,48 +177,28 @@
                             <div class="ui icon message">
                                 <i class="notched circle loading icon"></i>
                                 <div class="content">
-                                  <div class="header">
+                                    <div class="header">
                                     No Data Found Yet...
-                                  </div>
-                                  <p>We're fetching that content for you.</p>
+                                    </div>
+                                    <p>We're fetching that content for you.</p>
                                 </div>
-                              </div>
+                                </div>
                         </th>
                     </tr>           
                 {% endfor %}
             </tbody>
             <tfoot class="full-width">
-              <tr>
+                <tr>
                 <th></th>
                 <th colspan="7">
-                  <div class="ui right floated small blue labeled icon button">
+                    <div class="ui right floated small blue labeled icon button">
                     <i class="user icon"></i> Register  Couples
-                  </div>
-                  <!-- <div class="ui small button">
-                    Approve
-                  </div>
-                  <div class="ui small  disabled button">
-                    Approve All
-                  </div> -->
+                    </div>
                 </th>
-              </tr>
-              <!-- <tr><th colspan="7">
-                <div class="ui right floated pagination menu">
-                  <a class="icon item">
-                    <i class="left chevron icon"></i>
-                  </a>
-                  <a class="item">1</a>
-                  <a class="item">2</a>
-                  <a class="item">3</a>
-                  <a class="item">4</a>
-                  <a class="icon item">
-                    <i class="right chevron icon"></i>
-                  </a>
-                </div>
-              </th> -->
+                </tr>
             </tr>
             </tfoot>
-          </table>
+            </table>
     </div>
     <div class="ui divider"></div>
     <div class="table-divorse">
@@ -250,31 +206,26 @@
             Divorce Data:
         </h3>
         <div class="ui loading search">
-          <div class="ui icon input">
+            <div class="ui icon input">
             <input class="prompt" type="text" placeholder="Search Divorce">
             <i class="search icon"></i>
-          </div>
-          <div class="results"></div>
+            </div>
+            <div class="results"></div>
         </div>
         <table class="ui compact celled definition table">
             <thead>
-              <tr>
+                <tr>
                 <th>Divorce Matricule</th>
                 <th>Wedding Matricule</th>
                 <th>Sentence</th>
                 <th>Magistrate</th>
                 <th>Created Date</th>
                 <th>Certificate</th>
-              </tr>
+                </tr>
             </thead>
             <tbody>
                 {% for divorses in divorse %}
                     <tr>
-                        <!-- <td class="collapsing">
-                        <div class="ui fitted slider checkbox">
-                            <input type="checkbox"> <label></label>
-                        </div>
-                        </td> -->
                         <td>{{divorses.divorse_matricule}}</td>
                         <td>{{divorses.wed}}</td>
                         <td>{{divorses.sentence}}</td>
@@ -283,62 +234,33 @@
                         <td><i class="icon red print" style="font-size: 18px;"></i>Print</td>  
                     </tr>
                     {% empty %}
-                    <tr>
-                        <th colspan="5">
-                            <div class="ui icon message">
-                                <i class="notched circle loading icon"></i>
-                                <div class="content">
-                                  <div class="header">
-                                    No Data Found Yet...
-                                  </div>
-                                  <p>We're fetching that content for you.</p>
-                                </div>
-                              </div>
-                        </th>
-                    </tr>
-                {% endfor %}
-              <tr>
-                <!-- <td class="collapsing">
-                  <div class="ui fitted slider checkbox">
-                    <input type="checkbox"> <label></label>
-                  </div>
-                </td> -->
-              </tr>
-              
-              
+                        <tr>
+                            <th colspan="5">
+                                <div class="ui icon message">
+                                    <i class="notched circle loading icon"></i>
+                                    <div class="content">
+                                        <div class="header">
+                                        No Data Found Yet...
+                                        </div>
+                                        <p>We're fetching that content for you.</p>
+                                    </div>
+                                    </div>
+                            </th>
+                        </tr>
+                    {% endfor %}
+                <tr>
+                </tr>
             </tbody>
             <tfoot class="full-width">
-              <tr>
+                <tr>
                 <th></th>
                 <th colspan="5">
-                  <div class="ui right floated tiny blue labeled icon button">
+                    <div class="ui right floated tiny blue labeled icon button">
                     <i class="user icon"></i> <a class="ui  blue label" href="{% url 'certification:add-divorse'%}">Register Divorse</a> 
-                  </div>
-                  <!-- <div class="ui small button">
-                    Approve
-                  </div>
-                  <div class="ui small  disabled button">
-                    Approve All
-                  </div> -->
+                    </div>
                 </th>
-              </tr>
-              <!-- <tr>
-                <th colspan="4">
-                <div class="ui right floated pagination menu">
-                  <a class="icon item">
-                    <i class="left chevron icon"></i>
-                  </a>
-                  <a class="item">1</a>
-                  <a class="item">2</a>
-                  <a class="item">3</a>
-                  <a class="item">4</a>
-                  <a class="icon item">
-                    <i class="right chevron icon"></i>
-                  </a>
-                </div>
-              </th>
-            </tr> -->
+                </tr>
             </tfoot>
-          </table>
+            </table>
     </div>
 {% endblock %}
