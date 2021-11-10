@@ -21,8 +21,8 @@ class FindForm(forms.ModelForm):
 
 
 class CoupleForm(forms.ModelForm):
-    bride_photo = forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control-photo'}), required=False)
-    groom_photo = forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control-photo'}), required=False)
+    # bride_photo = forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control-photo'}), required=True)
+    # groom_photo = forms.ImageField(widget=forms.FileInput(attrs={'class':'form-control-photo'}), required=True)
     class Meta:
         model = Couple
         exclude = ['created_at', 'updated_at']

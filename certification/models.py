@@ -36,7 +36,7 @@ class Couple(models.Model):
     groom_dob = models.DateTimeField(blank=True, null=True)
     groom_phone = models.CharField(max_length=50, unique=True)
     groom_mail = models.EmailField(max_length=50, unique=True)
-    groom_photo = models.ImageField(upload_to='couple_images/', default='static/images/avatar-profil.png')
+    groom_photo = models.ImageField(upload_to='couple_images/' )
     groom_address = models.CharField(max_length=200)
     # choice_status = (('Pending', 'Pending'), ('Married', 'Married'), ('Divorse', 'Divorse'))
     groom_status = models.BooleanField(default=False)
@@ -46,7 +46,7 @@ class Couple(models.Model):
     bride_dob = models.DateTimeField(blank=True, null=True)
     bride_phone = models.CharField(max_length=50, unique=True)
     bride_mail = models.EmailField(max_length=50, unique=True)
-    bride_photo = models.ImageField(upload_to='couple_images/', default='static/images/avatar-profil.png')
+    bride_photo = models.ImageField(upload_to='couple_images/')
     bride_address = models.CharField(max_length=200)
     bride_status = models.BooleanField(default=False)
 

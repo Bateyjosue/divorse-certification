@@ -13,7 +13,7 @@ class WedAdmin(admin.ModelAdmin):
 class CoupleAdmin(admin.ModelAdmin):
     fields =[]
     list_display = ('pk','groom_Nat_ID', 'groom_full_name', 'groom_dob','groom_phone','groom_photo','groom_mail','groom_address','groom_status',
-    'bride_Nat_ID', 'bride_full_name', 'bride_dob','bride_phone','bride_mail','bride_address','bride_status','created_at','updated_at')
+    'bride_Nat_ID', 'bride_full_name', 'bride_dob','bride_phone','groom_photo','bride_mail','bride_address','bride_status','created_at','updated_at')
 
 
 @admin.register(Divorse)
