@@ -1,14 +1,15 @@
 {% extends 'partiel/base-dash.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
 {% block content%}
     <div>
         <h3 class="ui" style="background: rgb(13, 156, 234);padding:10px 20px;color: rgb(239, 236, 236);"> Couple Information</h3>
-       <form class="ui form" action="" method="post">
+       <form class="ui form" action="" method="post" enctype="multipart/form-data">
            {% csrf_token %}
            <div class="ui  two column grid" >
                 <div class="ui twelve wide column ">
                     <h3>Groom Information</h3>
-                    {{form}}
+                    {{form|crispy}}
                 </div>
            </div>
            <br>

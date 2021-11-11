@@ -1,7 +1,7 @@
 {% extends 'partiel/base-dash.html' %}
 {% load static %}
 {% block content%}
-    <div>
+    <div style="margin-bottom:200px; line-height: 0px;">
         <h3 class="ui" style="background: rgb(13, 156, 234);padding:10px 20px;color: rgb(239, 236, 236);"> Divorse Information</h3>
         {% if messages %}
             <ul class="messages">
@@ -10,16 +10,16 @@
                 {% endfor %}
             </ul>
         {% endif %}
-        <form class="ui form" action="" method="post" style="margin-bottom:340px;">
+        <form class="ui form" action="" method="post" style="margin-bottom:0px; line-height: 30px;">
            {% csrf_token %}
            <div class="ui   column grid" >
-                <div class="ui  column ">
+                <div class="ui ten wide column ">
                     {{divorse}}
                 </div>
            </div>
-           <br>
-           <div>
-               <input class="ui small  fluid  button blue" type="submit" value="Submit">
+            <br>
+           <div class="ui ten wide field">
+                <input class="ui small  fluid  button blue" type="submit" value="Submit">
            </div>
        </form>
     </div>

@@ -76,7 +76,6 @@ class CertificateView(View):
                 template = get_template(template_path)
                 html = template.render(context)
                 pisa_status = pisa.CreatePDF(html, dest=response )
-
                 if pisa_status.err:
                     return HttpResponse('We had some errors <pre>' + html + '</pre>')
                 return response

@@ -49,7 +49,7 @@
     <hr>
     {% if wed %}
         {% for wed in wed %}
-            <h2> <center> Certificat de Mariage</center> </h2>
+            <h2> <center> Certificat de Mariage: {{wed.divorse_matricule}}</center> </h2>
             <div style="border:2px solid rgb(243, 218, 218); text-align: center;">
                 <img src="media/{{wed.couple.groom_photo}}" alt="" height="200" >
                 <img src="{{wed.couple.bride_photo.path}}" alt="" height="200">
@@ -80,7 +80,7 @@
         {% endfor %}
     {% elif divorse %}
         {% for divorse in divorse%}
-        <h2> <center> Certificat de Divorse</center> </h2>
+        <h2> <center> Certificat de Divorse: {{divorse.divorse_matricule}}</center> </h2>
         <div class="text-center">
             <!-- Je sousigne <b>{{wed.officer}}</b>  avoir benie et unir Mr <b>{{wed.couple.groom_full_name}}</b>  a Mme <b>{{wed.couple.bride_full_name}}</b>  par le lien du mariage selon l'article
             12 du consitution de 1980 revise en 2009, par la loi qui me sont confere je vous declare Mari et Femme en ce date du <B>{{wed.created_at}}</B>  -->

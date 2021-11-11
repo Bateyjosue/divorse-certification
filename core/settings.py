@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'certification',
     # Crispy
     'crispy_forms',
+    'crispy_bootstrap5',
 
     #filter Django
     'django_filters',
@@ -181,7 +182,12 @@ MEDIA_URL   = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_TEMPLATE_PACK = 'semantic-ui'
-CRISPY_ALLOWED_TEMPLATE_PACKS = ('semantic-ui')
+CRISPY_ALLOWED_TEMPLATE_PACKS = ('semantic-ui', 'bootstrap5')
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 ACCOUNT_EMAIL_REQUIRED = True
 # ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT =10
 ACCOUNT_LOGOUT_REDIRECT_URL='account_login'
